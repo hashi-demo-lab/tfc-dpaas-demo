@@ -35,6 +35,7 @@ variable "region" {
   default     = "ap-southeast-2"
 }
 
+# Environment Blueprints - today only DefaultDataWarehouse, DefaultDataLake
 variable "environment_blueprints" {
   description = "The environment blueprints to deploy"
   type = map(object({

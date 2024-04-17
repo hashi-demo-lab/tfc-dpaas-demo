@@ -7,7 +7,7 @@ resource "awscc_datazone_domain" "this" {
   single_sign_on        = var.single_sign_on
 }
 
-
+# Data Zone blueprints
 resource "awscc_datazone_environment_blueprint_configuration" "this" {
   for_each = var.environment_blueprints
 
@@ -30,4 +30,15 @@ resource "awscc_datazone_project" "this" {
 
 
 
-#add user to project(x)
+# create environment profiles(s)
+resource "awscc_datazone_environment_profile" "this" {
+  for_each = var.datazone_environment_profiles
+
+  aws_account_id                   = each.value.aws_account_id
+  aws_account_region               = each.value.region
+  domain_identifier                = awscc_datazone_domain.this.id
+  environment_blueprint_identifier = each.value.environment_blueprint_identifier
+  name                             = each.key
+  description                      = try(each.value.description)
+  project_identifier               = awscc_datazone_project.this[each.value.project_name].project_id
+}

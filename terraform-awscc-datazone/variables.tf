@@ -82,13 +82,36 @@ variable "datazone_projects" {
     glossary_terms = optional(list(string))
   }))
   default = {
-    "project1" = {
-      description    = "Project 1"
+    "environment_project" = {
+      description    = "shared environment project"
       glossary_terms = ["term1", "term2"]
     }
-    "project2" = {
-      description    = "Project 2"
+    "Data Team Project 1" = {
+      description    = "Data Team Project 1"
       glossary_terms = ["term3", "term4"]
+    }
+  }
+}
+
+variable "datazone_environment_profiles" {
+  description = "The environment profiles to deploy"
+  type = map(object({
+    aws_account_id                   = string
+    name                             = string
+    description                      = optional(string)
+    region                           = string
+    environment_blueprint_identifier = string
+    project_name                     = string
+  }))
+  default = {
+
+    "DefaultDataWarehouse_profile" = {
+      aws_account_id                   = "855831148133"
+      name                             = "DefaultDataWarehouse_profile"
+      description                      = "DefaultDataWarehouse profile"
+      region                           = "ap-southeast-2"
+      environment_blueprint_identifier = "DefaultDataWarehouse"
+      project_name                     = "environment_project"
     }
   }
 }

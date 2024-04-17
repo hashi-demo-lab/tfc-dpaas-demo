@@ -41,5 +41,14 @@ variable "environment_blueprints" {
     enabled_regions = list(string)
     environment_blueprint_identifier = string
   }))
-  default = {}
+  default = {
+    DefaultDataWarehouse = {
+      enabled_regions = ["ap-southeast-2"]
+      environment_blueprint_identifier = "DefaultDataWarehouse"
+    }
+    DefaultDataLake = {
+      enabled_regions = ["ap-southeast-2"]
+      environment_blueprint_identifier = "DefaultDataLake"
+    }
+  }
 }

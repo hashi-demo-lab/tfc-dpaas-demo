@@ -9,7 +9,9 @@ resource "awscc_datazone_domain" "this" {
 
 resource "awscc_datazone_environment_blueprint_configuration" "this" {
   for_each = var.environment_blueprints
+
   domain_identifier = awscc_datazone_domain.this.id
   enabled_regions = each.value.enabled_regions
   environment_blueprint_identifier = each.value.environment_blueprint_identifier
 }
+

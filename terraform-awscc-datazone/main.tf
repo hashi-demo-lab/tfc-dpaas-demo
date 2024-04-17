@@ -37,7 +37,7 @@ resource "awscc_datazone_environment_profile" "this" {
   aws_account_id                   = each.value.aws_account_id
   aws_account_region               = each.value.region
   domain_identifier                = awscc_datazone_domain.this.id
-  environment_blueprint_identifier = each.value.environment_blueprint_identifier
+  environment_blueprint_identifier = awscc_datazone_environment_blueprint_configuration.this[each.value.environment_blueprint_identifier].environment_blueprint_id
   name                             = each.key
   description                      = try(each.value.description)
   project_identifier               = awscc_datazone_project.this[each.value.project_name].project_id

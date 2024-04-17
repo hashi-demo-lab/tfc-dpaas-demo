@@ -107,10 +107,10 @@ variable "datazone_environment_profiles" {
 
     "DefaultDataWarehouse_profile" = {
       aws_account_id                   = "855831148133"
-      name                             = "DefaultDataWarehouse_profile"
-      description                      = "DefaultDataWarehouse profile"
+      name                             = "DefaultDataLake_profile"
+      description                      = "DefaultDataLake profile"
       region                           = "ap-southeast-2"
-      environment_blueprint_identifier = "DefaultDataWarehouse"
+      environment_blueprint_identifier = "DefaultDataLake"
       project_name                     = "environment_project"
     }
   }

@@ -28,8 +28,6 @@ resource "awscc_datazone_project" "this" {
   glossary_terms    = try(each.value.glossary_terms)
 }
 
-
-
 # create environment profiles(s)
 resource "awscc_datazone_environment_profile" "this" {
   for_each = var.datazone_environment_profiles

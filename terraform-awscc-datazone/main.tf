@@ -4,6 +4,7 @@ resource "awscc_datazone_domain" "this" {
   domain_execution_role = var.datazone_domain_execution_role_arn
   tags                  = var.tags
   kms_key_identifier    = var.datazone_kms_key_identifier
+  single_sign_on        = var.single_sign_on
 }
 
 

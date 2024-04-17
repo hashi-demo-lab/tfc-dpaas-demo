@@ -23,6 +23,16 @@ variable "datazone_kms_key_identifier" {
   default     = null
 }
 
+variable "single_sign_on" {
+  description = "The single sign on configuration"
+  type = map(object({
+    type            = optional(string)
+    user_assignment = optional(string)
+  }))
+  default = {}
+  nullable = false
+}
+
 variable "tags" {
   description = "The tags to apply to the domain"
   type        = any

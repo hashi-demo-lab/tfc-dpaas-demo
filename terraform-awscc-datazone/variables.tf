@@ -45,7 +45,7 @@ variable "tags" {
 variable "region" {
   description = "The region to deploy the domain"
   type        = string
-  default     = "ap-southeast-2"
+  default     = "us-east-1"
 }
 
 # Environment Blueprints - today only DefaultDataWarehouse, DefaultDataLake
@@ -64,11 +64,11 @@ variable "environment_blueprints" {
 
   default = {
     DefaultDataWarehouse = {
-      enabled_regions                  = ["ap-southeast-2"]
+      enabled_regions                  = ["us-east-1"]
       environment_blueprint_identifier = "DefaultDataWarehouse"
     }
     DefaultDataLake = {
-      enabled_regions                  = ["ap-southeast-2"]
+      enabled_regions                  = ["us-east-1"]
       environment_blueprint_identifier = "DefaultDataLake"
     }
   }
@@ -108,14 +108,14 @@ variable "datazone_environment_profiles" {
     "DefaultDataWarehouse" = {
       aws_account_id                   = "855831148133"
       name                             = "DefaultDataWarehouse_profile"
-      region                           = "ap-southeast-2"
+      region                           = "us-east-1"
       environment_blueprint_identifier = "DefaultDataWarehouse"
       project_name                     = "environment_project"
     }
     "DefaultDataLake" = {
       aws_account_id                   = "855831148133"
       name                             = "DefaultDataLake_profile"
-      region                           = "ap-southeast-2"
+      region                           = "us-east-1"
       environment_blueprint_identifier = "DefaultDataLake"
       project_name                     = "environment_project"
     }

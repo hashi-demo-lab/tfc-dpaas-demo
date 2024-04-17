@@ -18,3 +18,16 @@ resource "awscc_datazone_environment_blueprint_configuration" "this" {
   provisioning_role_arn            = try(each.value.provisioning_role_arn)
 }
 
+#create a project(x)
+resource "awscc_datazone_project" "this" {
+  for_each = var.datazone_projects
+
+  domain_identifier = awscc_datazone_domain.this.id
+  name              = each.key
+  description       = try(each.value.description)
+  glossary_terms    = try(each.value.glossary_terms)
+}
+
+
+
+#add user to project(x)

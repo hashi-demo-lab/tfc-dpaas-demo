@@ -29,14 +29,17 @@ variable "single_sign_on" {
     type            = optional(string)
     user_assignment = optional(string)
   }))
-  default = {}
+  default  = {}
   nullable = false
 }
 
 variable "tags" {
   description = "The tags to apply to the domain"
-  type        = any
-  default     = null
+  type = set(object({
+    key   = string
+    value = string
+  }))
+  default = null
 }
 
 variable "region" {
@@ -67,6 +70,25 @@ variable "environment_blueprints" {
     DefaultDataLake = {
       enabled_regions                  = ["ap-southeast-2"]
       environment_blueprint_identifier = "DefaultDataLake"
+    }
+  }
+}
+
+
+variable "datazone_projects" {
+  description = "The projects to deploy"
+  type = map(object({
+    description    = optional(string)
+    glossary_terms = optional(list(string))
+  }))
+  default = {
+    "project1" = {
+      description    = "Project 1"
+      glossary_terms = ["term1", "term2"]
+    }
+    "project2" = {
+      description    = "Project 2"
+      glossary_terms = ["term3", "term4"]
     }
   }
 }

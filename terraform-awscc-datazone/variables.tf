@@ -121,3 +121,20 @@ variable "datazone_environment_profiles" {
     }
   }
 }
+
+
+variable "datazone_environments" {
+  description = "The environments to deploy"
+  type = map(object({
+    name                           = string
+    environment_profile_identifier = string
+    project_target                 = string
+  }))
+  default = {
+    "DefaultDataLake" = {
+      name                           = "Test Data Lake Environment"
+      environment_profile_identifier = "DefaultDataLake"
+      project_target                 = "Data Team Project 1"
+    }
+  }
+}

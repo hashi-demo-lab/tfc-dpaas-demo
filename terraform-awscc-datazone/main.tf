@@ -40,3 +40,13 @@ resource "awscc_datazone_environment_profile" "this" {
   description                      = try(each.value.description)
   project_identifier               = awscc_datazone_project.this[each.value.project_name].project_id
 }
+
+
+resource "awscc_datazone_environment" "this" {
+  for_each = var.datazone_environments
+
+  domain_identifier              = awscc_datazone_domain.this.id
+  environment_profile_identifier = awscc_datazone_environment_profile.this[each.value.environment_profile_identifier].environment_profile_id
+  name                           = each.value.name
+  project_identifier             = awscc_datazone_project.this[each.value.project_target].project_id
+}

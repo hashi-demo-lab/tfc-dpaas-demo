@@ -34,3 +34,12 @@ variable "region" {
   type        = string
   default     = "ap-southeast-2"
 }
+
+variable "environment_blueprints" {
+  description = "The environment blueprints to deploy"
+  type        = map(object({
+    enabled_regions = list(string)
+    environment_blueprint_identifier = string
+  }))
+  default = {}
+}

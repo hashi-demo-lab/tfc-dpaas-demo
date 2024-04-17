@@ -5,3 +5,11 @@ resource "awscc_datazone_domain" "name" {
   tags = var.tags
   kms_key_identifier = var.datazone_kms_key_identifier
 }
+
+
+resource "awscc_datazone_environment_blueprint_configuration" "name" {
+  for_each = var.environment_blueprints
+  domain_identifier = awscc_datazone_domain.name.id
+  enabled_regions = each.value.enabled_regions
+  environment_blueprint_identifier = each.value.environment_blueprint_identifier
+}

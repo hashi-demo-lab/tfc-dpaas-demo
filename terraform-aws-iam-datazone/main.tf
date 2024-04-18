@@ -188,7 +188,7 @@ resource "aws_iam_role" "datazone_provisioning" {
         Action : "sts:AssumeRole"
         Condition : {
           StringEquals : {
-            "aws:SourceAccount" : "{{domain_account}}"
+            "aws:SourceAccount" : var.aws_account
           }
         }
       }

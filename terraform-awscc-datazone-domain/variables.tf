@@ -56,22 +56,20 @@ variable "environment_blueprints" {
     environment_blueprint_identifier = string
     provisioning_role_arn            = optional(string)
     manage_access_role_arn           = optional(string)
-    regional_parameters = optional(set(object({
-      parameters = optional(any)
-      region     = optional(string)
-    })))
+    #regional_parameters = optional(set(object({
+    #  parameters = optional(any)
+    #  region     = optional(string)
+    #})))
   }))
 
   default = {
     DefaultDataWarehouse = {
       enabled_regions                  = ["ap-southeast-2"]
       environment_blueprint_identifier = "DefaultDataWarehouse"
-      #regional_parameters              = null
     }
     DefaultDataLake = {
       enabled_regions                  = ["ap-southeast-2"]
       environment_blueprint_identifier = "DefaultDataLake"
-      #regional_parameters              = null
     }
   }
 }

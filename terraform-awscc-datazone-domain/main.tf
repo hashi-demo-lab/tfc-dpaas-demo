@@ -23,7 +23,7 @@ module "datazone_iam" {
 # TO DO
 #
 resource "aws_s3_bucket" "datazone" {
-  bucket = "datazone-${awscc_datazone_domain.this.id}-${var.region}"
+  bucket_prefix = "datazone-${var.region}-"
 }
 
 resource "aws_s3_bucket_public_access_block" "datazone" {
@@ -69,7 +69,12 @@ resource "awscc_datazone_environment_blueprint_configuration" "this" {
   environment_blueprint_identifier = each.value.environment_blueprint_identifier
   manage_access_role_arn           = module.datazone_iam.datazone_access_arns[each.value.environment_blueprint_identifier]
   provisioning_role_arn            = module.datazone_iam.lakeformation_s3_provisioning_role_arn
-  regional_parameters              = try(each.value.regional_parameters)
+  regional_parameters = [
+    {
+      key   = aws_s3_bucket.datazone.region
+      value = { "S3Location" = "s3://${aws_s3_bucket.datazone.id}" }
+    }
+  ]
 }
 
 ################################################################################################
@@ -98,12 +103,13 @@ resource "awscc_datazone_environment_profile" "this" {
   project_identifier               = awscc_datazone_project.this[each.value.project_name].project_id
 }
 
+# moving this to consumer workspace
 
-resource "awscc_datazone_environment" "this" {
+/* resource "awscc_datazone_environment" "this" {
   for_each = var.datazone_environments
 
   domain_identifier              = awscc_datazone_domain.this.id
   environment_profile_identifier = awscc_datazone_environment_profile.this[each.value.environment_profile_identifier].environment_profile_id
   name                           = each.value.name
   project_identifier             = awscc_datazone_project.this[each.value.project_target].project_id
-}
+} */

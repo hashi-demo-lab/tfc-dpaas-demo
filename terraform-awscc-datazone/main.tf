@@ -16,6 +16,7 @@ resource "awscc_datazone_environment_blueprint_configuration" "this" {
   environment_blueprint_identifier = each.value.environment_blueprint_identifier
   manage_access_role_arn           = try(each.value.manage_access_role_arn)
   provisioning_role_arn            = try(each.value.provisioning_role_arn)
+  regional_parameters              = try(each.value.regional_parameters)
 }
 
 #create a project(x)

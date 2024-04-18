@@ -1,22 +1,32 @@
-## Place all your terraform resources here
-#  Locals at the top (if you are using them)
-#  Data blocks next to resources that are referencing them
-#  Reduce hard coded inputs where possible. They are used below for simplicity to show structure
-
-/* local {
-  # Local that is a map that is used for something
-  example-local {
-    key = value
-  }
+resource "aws_iam_role" "glue" {
+  name = "AmazonDataZoneGlueManageAccessRole-${var.region}-${var.datazone_domain_id}"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "datazone.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = var.aws_account
+          }
+          ArnEquals = {
+            "aws:SourceArn" = "arn:aws:datazone:${var.region}:${var.aws_account}:domain/${var.datazone_domain_id}"
+          }
+        }
+      }
+    ]
+  })
 }
 
-data "vault_auth_backend" "kubernetes" {
-  namespace = var.namespace
-  path      = "kubernetes"
+data "aws_iam_policy" "glue" {
+  name = "AmazonDataZoneGlueManageAccessRolePolicy"
 }
 
-resource "vault_policy" "policies" {
-  namespace = var.namespace
-  name      = "name"
-  policy    = "policy"
-} */
+resource "aws_iam_role_policy_attachment" "glue" {
+  role       = aws_iam_role.glue.name
+  policy_arn = data.aws_iam_policy.glue.arn
+}

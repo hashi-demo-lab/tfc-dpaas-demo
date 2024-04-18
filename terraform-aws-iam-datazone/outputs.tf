@@ -24,6 +24,11 @@ output "datazone_access_arns" {
 }
 
 
+output "datazone_provisioning_role_arn" {
+  value       = aws_iam_role.datazone_provisioning.arn
+  description = "The ARN of the IAM role for the DataZone provisioning role"
+}
+
 
 output "lakeformation_s3_provisioning_role_arn" {
   value       = aws_iam_role.s3lakeformation.arn

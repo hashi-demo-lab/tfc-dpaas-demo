@@ -196,4 +196,13 @@ resource "aws_iam_role" "datazone_provisioning" {
   })
 }
 
+data "aws_iam_policy" "datazone_provisioning" {
+  name = "AmazonDataZoneGlueManageAccessRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "datazone_provisioning" {
+  role       = aws_iam_role.datazone_provisioning.name
+  policy_arn = data.aws_iam_policy.datazone_provisioning.arn
+}
+
 

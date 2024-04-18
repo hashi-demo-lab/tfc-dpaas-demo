@@ -38,22 +38,22 @@ resource "aws_iam_role" "redshift" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-        {
-            "Sid": "RedshiftTrustPolicyStatement",
-            "Effect": "Allow",
-            "Principal": {
-                "Service": "datazone.amazonaws.com"
-            },
-            "Action": "sts:AssumeRole",
-            "Condition": {
-                "StringEquals": {
-                    "aws:SourceAccount": "855831148133"
-                },
-                "ArnEquals": {
-                    "aws:SourceArn": "arn:aws:datazone:us-east-1:855831148133:domain/dzd_b7gonunt1mnycn"
-                }
-            }
+      {
+        Sid    = "RedshiftTrustPolicyStatement"
+        Effect = "Allow"
+        Principal = {
+          Service = "datazone.amazonaws.com"
         }
+        Action : "sts:AssumeRole"
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = var.aws_account
+          }
+          ArnEquals = {
+            "aws:SourceArn" = "arn:aws:datazone:${var.region}:${var.aws_account}:domain/${var.datazone_domain_id}"
+          }
+        }
+      }
     ]
   })
 }
@@ -71,20 +71,20 @@ resource "aws_iam_role_policy_attachment" "redshift_managed" {
 resource "aws_iam_policy" "redshift" {
   name        = "AmazonDataZoneRedshiftAccessPolicy-${var.datazone_domain_id}"
   description = "Policy to allow DataZone to manage Redshift resources"
-  policy      = jsonencode({
+  policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-        {
-            "Sid": "RedshiftSecretStatement",
-            "Effect": "Allow",
-            "Action": "secretsmanager:GetSecretValue",
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": {
-                    "secretsmanager:ResourceTag/AmazonDataZoneDomain": "dzd_b7gonunt1mnycn"
-                }
-            }
+      {
+        "Sid"      = "RedshiftSecretStatement"
+        "Effect"   = "Allow"
+        "Action"   = "secretsmanager:GetSecretValue"
+        "Resource" = "*"
+        "Condition" = {
+          "StringEquals" = {
+            "secretsmanager:ResourceTag/AmazonDataZoneDomain" = var.datazone_domain_id
+          }
         }
+      }
     ]
   })
 }
@@ -92,4 +92,28 @@ resource "aws_iam_policy" "redshift" {
 resource "aws_iam_role_policy_attachment" "redshift" {
   role       = aws_iam_role.redshift.name
   policy_arn = aws_iam_policy.redshift.arn
+}
+
+
+# create role for S3 lake formation AmazonDataZoneS3Manage-dlutdtij3j8qhz
+resource "aws_iam_role" "s3lakeformation" {
+  name        = "AmazonDataZoneS3Manage-${var.region}-${var.datazone_domain_id}"
+  description = "IAM role to allow LakeFormation S3 access"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Sid"    = "TrustLakeFormationForDataLocationRegistration"
+        "Effect" = "Allow"
+        "Principal" = {
+          "Service" = "lakeformation.amazonaws.com"
+        }
+        "Action" = "sts:AssumeRole"
+        "Condition" = {
+          "StringEquals" = {
+            "aws:SourceAccount" = var.aws_account
+          }
+        }
+    }]
+  })
 }

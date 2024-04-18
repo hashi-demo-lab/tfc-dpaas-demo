@@ -17,7 +17,7 @@ output "redshift_access_role_arn" {
 }
 
 output "datazone_access_arns" {
-  value       = {
+  value = {
     DefaultDataWarehouse = aws_iam_role.redshift.arn
     DefaultDataLake      = aws_iam_role.glue.arn
   }

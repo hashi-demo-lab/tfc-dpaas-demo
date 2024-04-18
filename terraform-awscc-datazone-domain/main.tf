@@ -105,11 +105,11 @@ resource "awscc_datazone_environment_profile" "this" {
 
 # moving this to consumer workspace
 
-/* resource "awscc_datazone_environment" "this" {
+resource "awscc_datazone_environment" "this" {
   for_each = var.datazone_environments
 
   domain_identifier              = awscc_datazone_domain.this.id
   environment_profile_identifier = awscc_datazone_environment_profile.this[each.value.environment_profile_identifier].environment_profile_id
   name                           = each.value.name
   project_identifier             = awscc_datazone_project.this[each.value.project_target].project_id
-} */
+}

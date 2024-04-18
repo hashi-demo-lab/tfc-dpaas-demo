@@ -175,4 +175,25 @@ resource "aws_iam_role_policy_attachment" "s3lakeformation" {
 }
 
 
+resource "aws_iam_role" "datazone_provisioning" {
+  name = "AmazonDataZoneProvisioning-${var.datazone_domain_id}"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect : "Allow"
+        Principal : {
+          Service : "datazone.amazonaws.com"
+        }
+        Action : "sts:AssumeRole"
+        Condition : {
+          StringEquals : {
+            "aws:SourceAccount" : "{{domain_account}}"
+          }
+        }
+      }
+    ]
+  })
+}
+
 

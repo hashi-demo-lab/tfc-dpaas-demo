@@ -117,3 +117,59 @@ resource "aws_iam_role" "s3lakeformation" {
     }]
   })
 }
+
+resource "aws_iam_policy" "s3lakeformation" {
+  name        = "AmazonDataZoneS3Manage-${var.datazone_domain_id}"
+  description = "Policy to allow DataZone to manage s3"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Sid"    = "LakeFormationDataAccessPermissionsForS3"
+        "Effect" = "Allow"
+        "Action" = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:DeleteObject"
+        ]
+        "Resource" = "*"
+        "Condition" = {
+          "StringEquals" = {
+            "aws:ResourceAccount" = var.aws_account
+          }
+        }
+      },
+      {
+        "Sid"    = "LakeFormationDataAccessPermissionsForS3ListBucket"
+        "Effect" = "Allow"
+        "Action" = [
+          "s3:ListBucket"
+        ]
+        "Resource" = "*"
+        "Condition" = {
+          "StringEquals" = {
+            "aws:ResourceAccount" = var.aws_account
+          }
+        }
+      },
+      {
+        "Sid"    = "LakeFormationDataAccessPermissionsForS3ListAllMyBuckets"
+        "Effect" = "Allow"
+        "Action" = [
+          "s3:ListAllMyBuckets"
+        ]
+        "Resource" = "arn:aws:s3:::*"
+        "Condition" = {
+          "StringEquals" = {
+            "aws:ResourceAccount" = var.aws_account
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "s3lakeformation" {
+  role       = aws_iam_role.s3lakeformation.name
+  policy_arn = aws_iam_policy.s3lakeformation.arn
+}

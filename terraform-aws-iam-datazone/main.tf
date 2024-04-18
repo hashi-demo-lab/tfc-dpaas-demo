@@ -197,7 +197,7 @@ resource "aws_iam_role" "datazone_provisioning" {
 }
 
 data "aws_iam_policy" "datazone_provisioning" {
-  name = "AmazonDataZoneGlueManageAccessRolePolicy"
+  name = "AmazonDataZoneRedshiftGlueProvisioningPolicy"
 }
 
 resource "aws_iam_role_policy_attachment" "datazone_provisioning" {

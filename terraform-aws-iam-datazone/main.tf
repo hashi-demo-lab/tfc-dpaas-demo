@@ -44,7 +44,7 @@ resource "aws_iam_role" "redshift" {
         Principal = {
           Service = "datazone.amazonaws.com"
         }
-        Action : "sts:AssumeRole"
+        Action = "sts:AssumeRole"
         Condition = {
           StringEquals = {
             "aws:SourceAccount" = var.aws_account
@@ -75,12 +75,12 @@ resource "aws_iam_policy" "redshift" {
     Version = "2012-10-17"
     Statement = [
       {
-        "Sid"      = "RedshiftSecretStatement"
-        "Effect"   = "Allow"
-        "Action"   = "secretsmanager:GetSecretValue"
-        "Resource" = "*"
-        "Condition" = {
-          "StringEquals" = {
+        Sid      = "RedshiftSecretStatement"
+        Effect   = "Allow"
+        Action   = "secretsmanager:GetSecretValue"
+        Resource = "*"
+        Condition = {
+          StringEquals = {
             "secretsmanager:ResourceTag/AmazonDataZoneDomain" = var.datazone_domain_id
           }
         }
@@ -103,14 +103,14 @@ resource "aws_iam_role" "s3lakeformation" {
     Version = "2012-10-17"
     Statement = [
       {
-        "Sid"    = "TrustLakeFormationForDataLocationRegistration"
-        "Effect" = "Allow"
-        "Principal" = {
-          "Service" = "lakeformation.amazonaws.com"
+        Sid    = "TrustLakeFormationForDataLocationRegistration"
+        Effect = "Allow"
+        Principal = {
+          Service = "lakeformation.amazonaws.com"
         }
-        "Action" = "sts:AssumeRole"
-        "Condition" = {
-          "StringEquals" = {
+        Action = "sts:AssumeRole"
+        Condition = {
+          StringEquals = {
             "aws:SourceAccount" = var.aws_account
           }
         }
@@ -125,42 +125,42 @@ resource "aws_iam_policy" "s3lakeformation" {
     Version = "2012-10-17"
     Statement = [
       {
-        "Sid"    = "LakeFormationDataAccessPermissionsForS3"
-        "Effect" = "Allow"
-        "Action" = [
+        Sid    = "LakeFormationDataAccessPermissionsForS3"
+        Effect = "Allow"
+        Action = [
           "s3:PutObject",
           "s3:GetObject",
           "s3:DeleteObject"
         ]
-        "Resource" = "*"
-        "Condition" = {
-          "StringEquals" = {
+        Resource = "*"
+        Condition = {
+          StringEquals = {
             "aws:ResourceAccount" = var.aws_account
           }
         }
       },
       {
-        "Sid"    = "LakeFormationDataAccessPermissionsForS3ListBucket"
-        "Effect" = "Allow"
-        "Action" = [
+        Sid    = "LakeFormationDataAccessPermissionsForS3ListBucket"
+        Effect = "Allow"
+        Action = [
           "s3:ListBucket"
         ]
-        "Resource" = "*"
-        "Condition" = {
-          "StringEquals" = {
+        Resource = "*"
+        Condition = {
+          StringEquals = {
             "aws:ResourceAccount" = var.aws_account
           }
         }
       },
       {
-        "Sid"    = "LakeFormationDataAccessPermissionsForS3ListAllMyBuckets"
-        "Effect" = "Allow"
-        "Action" = [
+        Sid    = "LakeFormationDataAccessPermissionsForS3ListAllMyBuckets"
+        Effect = "Allow"
+        Action = [
           "s3:ListAllMyBuckets"
         ]
-        "Resource" = "arn:aws:s3:::*"
-        "Condition" = {
-          "StringEquals" = {
+        Resource = "arn:aws:s3:::*"
+        Condition = {
+          StringEquals = {
             "aws:ResourceAccount" = var.aws_account
           }
         }

@@ -15,3 +15,9 @@ output "redshift_access_role_arn" {
   value       = aws_iam_role.redshift.arn
   description = "The ARN of the IAM role for the DataZone Redshift role"
 }
+
+
+output "lakeformation_s3_provisioning_role_arn" {
+  value       = aws_iam_role.s3lakeformation.arn
+  description = "The ARN of the IAM role for the DataZone LakeFormation S3 role"
+}

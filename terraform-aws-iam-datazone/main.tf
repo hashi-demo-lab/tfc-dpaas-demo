@@ -32,7 +32,7 @@ resource "aws_iam_role_policy_attachment" "glue" {
 }
 
 
-# create role for redshift with inline policy AmazonDataZoneRedshiftAccess-<region>-<domainId> use assume
+# create role for redshift with trust relationshop
 resource "aws_iam_role" "redshift" {
   name = "AmazonDataZoneRedshiftAccess-${var.region}-${var.datazone_domain_id}"
   assume_role_policy = jsonencode({
@@ -67,7 +67,7 @@ resource "aws_iam_role_policy_attachment" "redshift_managed" {
   policy_arn = data.aws_iam_policy.redshift_managed.arn
 }
 
-# to do redshift policy inline AmazonDataZoneRedshiftAccessPolicy-b7gonunt1mnycn customer managed policy
+# to do redshift access policy  - customer managed policy - aws secrets manager
 resource "aws_iam_policy" "redshift" {
   name        = "AmazonDataZoneRedshiftAccessPolicy-${var.datazone_domain_id}"
   description = "Policy to allow DataZone to manage Redshift resources"

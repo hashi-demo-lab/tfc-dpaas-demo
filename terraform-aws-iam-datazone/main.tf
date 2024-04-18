@@ -58,11 +58,38 @@ resource "aws_iam_role" "redshift" {
   })
 }
 
-data "aws_iam_policy" "redshift" {
+data "aws_iam_policy" "redshift_managed" {
   name = "AmazonDataZoneRedshiftManageAccessRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "redshift_managed" {
+  role       = aws_iam_role.redshift.name
+  policy_arn = data.aws_iam_policy.redshift_managed.arn
+}
+
+# to do redshift policy inline AmazonDataZoneRedshiftAccessPolicy-b7gonunt1mnycn customer managed policy
+resource "aws_iam_policy" "redshift" {
+  name        = "AmazonDataZoneRedshiftAccessPolicy-${var.datazone_domain_id}"
+  description = "Policy to allow DataZone to manage Redshift resources"
+  policy      = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+        {
+            "Sid": "RedshiftSecretStatement",
+            "Effect": "Allow",
+            "Action": "secretsmanager:GetSecretValue",
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "secretsmanager:ResourceTag/AmazonDataZoneDomain": "dzd_b7gonunt1mnycn"
+                }
+            }
+        }
+    ]
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "redshift" {
   role       = aws_iam_role.redshift.name
-  policy_arn = data.aws_iam_policy.redshift.arn
+  policy_arn = aws_iam_policy.redshift.arn
 }

@@ -10,3 +10,8 @@ output "glue_acces_role_arn" {
   value       = aws_iam_role.glue.arn
   description = "The ARN of the IAM role for the DataZone Glue role"
 }
+
+output "redshift_access_role_arn" {
+  value       = aws_iam_role.redshift.arn
+  description = "The ARN of the IAM role for the DataZone Redshift role"
+}

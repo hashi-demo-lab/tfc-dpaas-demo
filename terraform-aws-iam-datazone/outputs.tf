@@ -16,6 +16,14 @@ output "redshift_access_role_arn" {
   description = "The ARN of the IAM role for the DataZone Redshift role"
 }
 
+output "datazone_access_arns" {
+  value       = {
+    DefaultDataWarehouse = aws_iam_policy.redshift.arn
+    DefaultDataLake      = aws_iam_policy.glue.arn
+  }
+}
+
+
 
 output "lakeformation_s3_provisioning_role_arn" {
   value       = aws_iam_role.s3lakeformation.arn

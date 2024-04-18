@@ -1,5 +1,5 @@
 resource "aws_iam_role" "glue" {
-  name = "AmazonDataZoneGlueManageAccessRole-${var.region}-${var.datazone_domain_id}"
+  name = "DataZoneGlueAccessRole-${var.region}-${var.datazone_domain_id}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

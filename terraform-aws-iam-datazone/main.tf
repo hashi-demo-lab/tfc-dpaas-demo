@@ -173,3 +173,6 @@ resource "aws_iam_role_policy_attachment" "s3lakeformation" {
   role       = aws_iam_role.s3lakeformation.name
   policy_arn = aws_iam_policy.s3lakeformation.arn
 }
+
+
+

@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "awscc_datazone_domain" "this" {
   name                  = var.datazone_domain_name
   description           = var.datazone_description
@@ -7,7 +9,22 @@ resource "awscc_datazone_domain" "this" {
   single_sign_on        = var.single_sign_on
 }
 
-# Data Zone blueprints
+# create AWS Datazone IAM
+module "datazone_iam" {
+  source = "github.com/hashi-demo-lab/tfc-dpaas-demo//terraform-aws-iam-datazone"
+
+  datazone_domain_id = awscc_datazone_domain.this.id
+  aws_account       = data.aws_caller_identity.current.account_id
+  region            = var.region
+}
+
+#
+# S3 bucket for DataZone Lake Formation
+# TO DO
+#
+
+
+# Enable Data Zone blueprints
 resource "awscc_datazone_environment_blueprint_configuration" "this" {
   for_each = var.environment_blueprints
 
@@ -18,6 +35,9 @@ resource "awscc_datazone_environment_blueprint_configuration" "this" {
   provisioning_role_arn            = try(each.value.provisioning_role_arn)
   regional_parameters              = try(each.value.regional_parameters)
 }
+
+################################################################################################
+# Due to separation of duties, the following resources below will be moved to a different module
 
 #create a project(x)
 resource "awscc_datazone_project" "this" {

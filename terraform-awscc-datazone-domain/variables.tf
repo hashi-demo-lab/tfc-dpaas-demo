@@ -45,7 +45,7 @@ variable "tags" {
 variable "region" {
   description = "The region to deploy the domain"
   type        = string
-  default     = "us-east-1"
+  default     = "ap-southeast-2"
 }
 
 # Environment Blueprints - today only DefaultDataWarehouse, DefaultDataLake
@@ -56,20 +56,22 @@ variable "environment_blueprints" {
     environment_blueprint_identifier = string
     provisioning_role_arn            = optional(string)
     manage_access_role_arn           = optional(string)
-    regional_parameters = optional(map(object({
-      parameters = list(string)
-      region     = string
+    regional_parameters = optional(set(object({
+      parameters = optional(any)
+      region     = optional(string)
     })))
   }))
 
   default = {
     DefaultDataWarehouse = {
-      enabled_regions                  = ["us-east-1"]
+      enabled_regions                  = ["ap-southeast-2"]
       environment_blueprint_identifier = "DefaultDataWarehouse"
+      #regional_parameters              = null
     }
     DefaultDataLake = {
-      enabled_regions                  = ["us-east-1"]
+      enabled_regions                  = ["ap-southeast-2"]
       environment_blueprint_identifier = "DefaultDataLake"
+      #regional_parameters              = null
     }
   }
 }
@@ -82,11 +84,11 @@ variable "datazone_projects" {
     glossary_terms = optional(list(string))
   }))
   default = {
-    "environment_project" = {
+    "environment" = {
       description    = "shared environment project"
       glossary_terms = ["term1", "term2"]
     }
-    "Data Team Project 1" = {
+    "data_team" = {
       description    = "Data Team Project 1"
       glossary_terms = ["term3", "term4"]
     }
@@ -108,16 +110,16 @@ variable "datazone_environment_profiles" {
     "DefaultDataWarehouse" = {
       aws_account_id                   = "855831148133"
       name                             = "DefaultDataWarehouse_profile"
-      region                           = "us-east-1"
+      region                           = "ap-southeast-2"
       environment_blueprint_identifier = "DefaultDataWarehouse"
-      project_name                     = "environment_project"
+      project_name                     = "environment"
     }
     "DefaultDataLake" = {
       aws_account_id                   = "855831148133"
       name                             = "DefaultDataLake_profile"
-      region                           = "us-east-1"
+      region                           = "ap-southeast-2"
       environment_blueprint_identifier = "DefaultDataLake"
-      project_name                     = "environment_project"
+      project_name                     = "environment"
     }
   }
 }
@@ -134,7 +136,7 @@ variable "datazone_environments" {
     "DefaultDataLake" = {
       name                           = "Test Data Lake Environment"
       environment_profile_identifier = "DefaultDataLake"
-      project_target                 = "Data Team Project 1"
+      project_target                 = "data_team"
     }
   }
 }

@@ -16,5 +16,4 @@ variable "region" {
 variable "datazone_domain_id" {
   type        = string
   description = "DataZone Domain ID"
-  default     = "d-1234567890"
 }

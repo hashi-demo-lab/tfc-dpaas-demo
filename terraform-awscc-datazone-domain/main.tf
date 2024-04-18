@@ -14,8 +14,8 @@ module "datazone_iam" {
   source = "github.com/hashi-demo-lab/tfc-dpaas-demo//terraform-aws-iam-datazone"
 
   datazone_domain_id = awscc_datazone_domain.this.id
-  aws_account       = data.aws_caller_identity.current.account_id
-  region            = var.region
+  aws_account        = data.aws_caller_identity.current.account_id
+  region             = var.region
 }
 
 #
@@ -31,7 +31,7 @@ resource "awscc_datazone_environment_blueprint_configuration" "this" {
   domain_identifier                = awscc_datazone_domain.this.id
   enabled_regions                  = each.value.enabled_regions
   environment_blueprint_identifier = each.value.environment_blueprint_identifier
-  manage_access_role_arn           = try(each.value.manage_access_role_arn)
+  manage_access_role_arn           = module.datazone_iam.datazone_access_arns[each.value.environment_blueprint_identifier]
   provisioning_role_arn            = module.datazone_iam.lakeformation_s3_provisioning_role_arn
   regional_parameters              = try(each.value.regional_parameters)
 }

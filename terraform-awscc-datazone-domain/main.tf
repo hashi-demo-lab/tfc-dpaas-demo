@@ -71,10 +71,10 @@ resource "awscc_datazone_environment_blueprint_configuration" "this" {
   provisioning_role_arn            = module.datazone_iam.lakeformation_s3_provisioning_role_arn
   regional_parameters = [
     {
-      key   = aws_s3_bucket.datazone.region
-      value = { "S3Location" = "s3://${aws_s3_bucket.datazone.id}" }
-    }
-  ]
+      region = "${aws_s3_bucket.datazone.region}"
+      parameters = {
+      "S3Location" = "s3://${aws_s3_bucket.datazone.id}" }
+  }]
 }
 
 ################################################################################################

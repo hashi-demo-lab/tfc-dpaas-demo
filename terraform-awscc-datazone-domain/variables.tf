@@ -56,10 +56,6 @@ variable "environment_blueprints" {
     environment_blueprint_identifier = string
     provisioning_role_arn            = optional(string)
     manage_access_role_arn           = optional(string)
-    #regional_parameters = optional(set(object({
-    #  parameters = optional(any)
-    #  region     = optional(string)
-    #})))
   }))
 
   default = {
@@ -105,13 +101,13 @@ variable "datazone_environment_profiles" {
   }))
   default = {
 
-    "DefaultDataWarehouse" = {
+  "DefaultDataWarehouse" = {
       aws_account_id                   = "855831148133"
       name                             = "DefaultDataWarehouse_profile"
       region                           = "ap-southeast-2"
       environment_blueprint_identifier = "DefaultDataWarehouse"
       project_name                     = "environment"
-    }
+    } 
     "DefaultDataLake" = {
       aws_account_id                   = "855831148133"
       name                             = "DefaultDataLake_profile"

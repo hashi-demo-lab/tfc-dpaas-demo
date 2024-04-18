@@ -68,7 +68,7 @@ resource "awscc_datazone_environment_blueprint_configuration" "this" {
   enabled_regions                  = each.value.enabled_regions
   environment_blueprint_identifier = each.value.environment_blueprint_identifier
   manage_access_role_arn           = module.datazone_iam.datazone_access_arns[each.value.environment_blueprint_identifier]
-  provisioning_role_arn            = module.datazone_iam.lakeformation_s3_provisioning_role_arn
+  provisioning_role_arn            = module.datazone_iam.datazone_provisioning_role_arn
   regional_parameters = [
     {
       region = "${aws_s3_bucket.datazone.region}"

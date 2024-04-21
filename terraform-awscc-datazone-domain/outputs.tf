@@ -10,3 +10,11 @@ output "s3_datazone" {
 output "s3_datazone_region" {
   value = aws_s3_bucket.datazone.region
 }
+
+output "datazone_portal" {
+  value = awscc_datazone_domain.this.portal_url
+}
+
+output "datazone_status" {
+  value = awscc_datazone_domain.this.status
+}

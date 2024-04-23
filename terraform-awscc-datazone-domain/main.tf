@@ -1,9 +1,38 @@
 data "aws_caller_identity" "current" {}
 
+#Execution role to be attached to Datazone Domain, has to be pre-created
+resource "awscc_iam_role" "this" {
+  path = "/service-role/"
+  assume_role_policy_document = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "datazone.amazonaws.com"
+        },
+        "Action" : [
+          "sts:AssumeRole",
+          "sts:TagSession"
+        ],
+        "Condition" : {
+          "StringEquals" : {
+            "aws:SourceAccount" : data.aws_caller_identity.current.account_id
+          },
+          "ForAllValues:StringLike" : {
+            "aws:TagKeys" : "datazone*"
+          }
+        }
+      }
+    ]
+  })
+  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AmazonDataZoneDomainExecutionRolePolicy"]
+}
+
 resource "awscc_datazone_domain" "this" {
   name                  = var.datazone_domain_name
   description           = var.datazone_description
-  domain_execution_role = var.datazone_domain_execution_role_arn
+  domain_execution_role = awscc_iam_role.this.arn
   tags                  = var.tags
   kms_key_identifier    = var.datazone_kms_key_identifier
   single_sign_on        = var.single_sign_on

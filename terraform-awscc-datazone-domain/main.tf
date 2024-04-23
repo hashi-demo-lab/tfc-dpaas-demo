@@ -18,10 +18,6 @@ module "datazone_iam" {
   region             = var.region
 }
 
-#
-# S3 bucket for DataZone Lake Formation
-# TO DO
-#
 resource "aws_s3_bucket" "datazone" {
   bucket_prefix = "datazone-${var.region}-"
 }
@@ -102,8 +98,6 @@ resource "awscc_datazone_environment_profile" "this" {
   description                      = try(each.value.description)
   project_identifier               = awscc_datazone_project.this[each.value.project_name].project_id
 }
-
-# moving this to consumer workspace
 
 resource "awscc_datazone_environment" "this" {
   for_each = var.datazone_environments

@@ -127,8 +127,18 @@ variable "datazone_environments" {
     project_target                 = string
   }))
   default = {
-    "DefaultDataLake" = {
-      name                           = "Test Data Lake Environment"
+    "Raw" = {
+      name                           = "Raw Data Lake"
+      environment_profile_identifier = "DefaultDataLake"
+      project_target                 = "data_team"
+    }
+    "Curated" = {
+      name                           = "Curated Data Lake"
+      environment_profile_identifier = "DefaultDataLake"
+      project_target                 = "data_team"
+    }
+    "Product" = {
+      name                           = "Product Data Lake"
       environment_profile_identifier = "DefaultDataLake"
       project_target                 = "data_team"
     }

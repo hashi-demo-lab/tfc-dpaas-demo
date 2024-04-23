@@ -73,10 +73,7 @@ resource "awscc_datazone_environment_blueprint_configuration" "this" {
   }]
 }
 
-################################################################################################
-# Due to separation of duties, the following resources below will be moved to a different module
 
-#create a project(x)
 resource "awscc_datazone_project" "this" {
   for_each = var.datazone_projects
 
@@ -85,6 +82,11 @@ resource "awscc_datazone_project" "this" {
   description       = try(each.value.description)
   glossary_terms    = try(each.value.glossary_terms)
 }
+
+
+
+################################################################################################
+# Due to separation of duties, the following resources below will be moved to a different module
 
 # create environment profiles(s)
 resource "awscc_datazone_environment_profile" "this" {

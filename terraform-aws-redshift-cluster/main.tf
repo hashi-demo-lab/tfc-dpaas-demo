@@ -36,7 +36,7 @@ module "redshift" {
   master_username = "mydbuser"
   # Either provide a good master password
   #  create_random_password = false
-  #  master_password        = "MySecretPassw0rd1!" # Do better!
+  #  master_password        = "******" # Do better!
   # Or make Redshift manage it in secrets manager
   manage_master_password = true
 

@@ -1,5 +1,10 @@
 ## Variables file
 
+variable "aws_account" {
+  type        = string
+  description = "AWS Account ID"
+  default     = "855831148133"
+}
 variable "datazone_domain_name" {
   description = "The name of the aws datazone domain"
   type        = string

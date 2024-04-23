@@ -1,7 +1,13 @@
 ## Variables file
 
-/* variable "namespace" {
-  description = "(Optional) - Namespace that will be used for the configuration"
+variable "region" {
+  description = "The region to deploy the redis-cluster in"
   type        = string
-  default     = null
-} */
+  default     = "ap-southeast-2"
+}
+
+variable "secondary_region" {
+  description = "The region to deploy the redis-cluster in"
+  type        = string
+  default     = "ap-south-1"
+}

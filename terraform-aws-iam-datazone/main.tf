@@ -94,7 +94,6 @@ resource "aws_iam_role_policy_attachment" "redshift" {
   policy_arn = aws_iam_policy.redshift.arn
 }
 
-
 # create role for S3 lake formation AmazonDataZoneS3Manage-dlutdtij3j8qhz
 resource "aws_iam_role" "s3lakeformation" {
   name        = "AmazonDataZoneS3Manage-${var.region}-${var.datazone_domain_id}"

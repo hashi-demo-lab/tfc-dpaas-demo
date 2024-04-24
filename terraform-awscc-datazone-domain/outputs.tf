@@ -25,3 +25,7 @@ output "datazone_portal" {
 output "datazone_status" {
   value = awscc_datazone_domain.this.status
 }
+
+output "awscc_executionrole" {
+  value = awscc_iam_role.this
+}

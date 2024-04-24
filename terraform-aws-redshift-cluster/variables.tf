@@ -9,5 +9,5 @@ variable "region" {
 variable "secondary_region" {
   description = "The region to deploy the redis-cluster in"
   type        = string
-  default     = "ap-south-1"
+  default     = "ap-southeast-1"
 }

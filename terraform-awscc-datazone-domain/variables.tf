@@ -16,12 +16,6 @@ variable "datazone_description" {
   default     = "AWS DataZone Domain"
 }
 
-variable "datazone_domain_execution_role_arn" {
-  description = "datazone domain exectuion role arn"
-  type        = string
-  default     = "arn:aws:iam::855831148133:role/service-role/AmazonDataZoneDomainExecution"
-}
-
 variable "datazone_kms_key_identifier" {
   description = "The KMS key identifier to use for encryption"
   type        = string

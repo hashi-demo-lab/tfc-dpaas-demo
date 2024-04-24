@@ -29,8 +29,8 @@ module "redshift" {
 
   cluster_identifier    = local.name
   allow_version_upgrade = true
-  node_type             = "ra3.xlplus"
-  number_of_nodes       = 3
+  node_type             = "dc2.large"
+  number_of_nodes       = 1
 
   database_name   = "mydb"
   master_username = "mydbuser"
@@ -51,7 +51,7 @@ module "redshift" {
   subnet_ids             = module.vpc.redshift_subnets
 
   # Only available when using the ra3.x type
-  availability_zone_relocation_enabled = true
+  # availability_zone_relocation_enabled = true
 
   # snapshot_copy = {
   #   destination_region = var.secondary_region
@@ -143,10 +143,10 @@ module "redshift" {
   }
 
   # Endpoint access - only available when using the ra3.x type
-  create_endpoint_access          = true
-  endpoint_name                   = "${local.name}-example"
-  endpoint_subnet_group_name      = aws_redshift_subnet_group.endpoint.id
-  endpoint_vpc_security_group_ids = [module.security_group.security_group_id]
+  # create_endpoint_access          = true
+  # endpoint_name                   = "${local.name}-example"
+  # endpoint_subnet_group_name      = aws_redshift_subnet_group.endpoint.id
+  # endpoint_vpc_security_group_ids = [module.security_group.security_group_id]
 
 
   # Usage limits

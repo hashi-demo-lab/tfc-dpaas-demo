@@ -128,6 +128,7 @@ resource "awscc_datazone_environment_profile" "this" {
   name                             = each.key
   description                      = try(each.value.description)
   project_identifier               = awscc_datazone_project.this[each.value.project_name].project_id
+  user_parameters                  = try(each.value.user_parameters)
 }
 
 resource "awscc_datazone_environment" "this" {

@@ -16,12 +16,6 @@ variable "datazone_description" {
   default     = "AWS DataZone Domain"
 }
 
-variable "datazone_domain_execution_role_arn" {
-  description = "datazone domain exectuion role arn"
-  type        = string
-  default     = "arn:aws:iam::855831148133:role/service-role/AmazonDataZoneDomainExecution"
-}
-
 variable "datazone_kms_key_identifier" {
   description = "The KMS key identifier to use for encryption"
   type        = string
@@ -103,16 +97,22 @@ variable "datazone_environment_profiles" {
     region                           = string
     environment_blueprint_identifier = string
     project_name                     = string
+    user_parameters = optional(list(object({
+      name  = string
+      value = string
+    })))
+
   }))
   default = {
 
-  "DefaultDataWarehouse" = {
+    "DefaultDataWarehouse" = {
       aws_account_id                   = "855831148133"
       name                             = "DefaultDataWarehouse_profile"
       region                           = "ap-southeast-2"
       environment_blueprint_identifier = "DefaultDataWarehouse"
       project_name                     = "environment"
-    } 
+      user_parameters                  = []
+    }
     "DefaultDataLake" = {
       aws_account_id                   = "855831148133"
       name                             = "DefaultDataLake_profile"

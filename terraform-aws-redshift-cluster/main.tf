@@ -114,30 +114,30 @@ module "redshift" {
   snapshot_schedule_force_destroy = true
 
   # Scheduled actions
-  create_scheduled_action_iam_role = true
-  scheduled_actions = {
-    pause = {
-      name          = "${local.name}-pause"
-      description   = "Pause cluster every night"
-      schedule      = "cron(0 22 * * ? *)"
-      pause_cluster = true
-    }
-    resize = {
-      name        = "${local.name}-resize"
-      description = "Resize cluster (demo only)"
-      schedule    = "cron(00 13 * * ? *)"
-      resize_cluster = {
-        node_type       = "ds2.xlarge"
-        number_of_nodes = 5
-      }
-    }
-    resume = {
-      name           = "${local.name}-resume"
-      description    = "Resume cluster every morning"
-      schedule       = "cron(0 12 * * ? *)"
-      resume_cluster = true
-    }
-  }
+  # create_scheduled_action_iam_role = true
+  # scheduled_actions = {
+  #   pause = {
+  #     name          = "${local.name}-pause"
+  #     description   = "Pause cluster every night"
+  #     schedule      = "cron(0 22 * * ? *)"
+  #     pause_cluster = true
+  #   }
+  #   resize = {
+  #     name        = "${local.name}-resize"
+  #     description = "Resize cluster (demo only)"
+  #     schedule    = "cron(00 13 * * ? *)"
+  #     resize_cluster = {
+  #       node_type       = "ds2.xlarge"
+  #       number_of_nodes = 5
+  #     }
+  #   }
+  #   resume = {
+  #     name           = "${local.name}-resume"
+  #     description    = "Resume cluster every morning"
+  #     schedule       = "cron(0 12 * * ? *)"
+  #     resume_cluster = true
+  #   }
+  # }
 
   # Endpoint access - only available when using the ra3.x type
   # create_endpoint_access          = true

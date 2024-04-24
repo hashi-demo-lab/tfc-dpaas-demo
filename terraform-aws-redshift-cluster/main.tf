@@ -37,8 +37,7 @@ module "redshift" {
   
   manage_master_password = true
 
-  manage_master_password_rotation              = true
-  master_password_rotation_schedule_expression = "rate(90 days)"
+  manage_master_password_rotation = false
 
   encrypted   = true
   kms_key_arn = aws_kms_key.redshift.arn
@@ -55,12 +54,7 @@ module "redshift" {
   #   grant_name         = aws_redshift_snapshot_copy_grant.secondary.snapshot_copy_grant_name
   # }
 
-  logging = {
-    enable        = true
-    bucket_name   = module.s3_logs.s3_bucket_id
-    s3_key_prefix = local.s3_prefix
-  }
-
+  
   # Parameter group
   parameter_group_name        = "${local.name}-custom"
   parameter_group_description = "Custom parameter group for ${local.name} cluster"
@@ -104,66 +98,10 @@ module "redshift" {
   subnet_group_tags = {
     Additional = "CustomSubnetGroup"
   }
-
-  # Snapshot schedule
-  create_snapshot_schedule        = true
-  snapshot_schedule_identifier    = local.name
-  use_snapshot_identifier_prefix  = true
-  snapshot_schedule_description   = "Example snapshot schedule"
-  snapshot_schedule_definitions   = ["rate(12 hours)"]
-  snapshot_schedule_force_destroy = true
-
-  # Scheduled actions
-  # create_scheduled_action_iam_role = true
-  # scheduled_actions = {
-  #   pause = {
-  #     name          = "${local.name}-pause"
-  #     description   = "Pause cluster every night"
-  #     schedule      = "cron(0 22 * * ? *)"
-  #     pause_cluster = true
-  #   }
-  #   resize = {
-  #     name        = "${local.name}-resize"
-  #     description = "Resize cluster (demo only)"
-  #     schedule    = "cron(00 13 * * ? *)"
-  #     resize_cluster = {
-  #       node_type       = "ds2.xlarge"
-  #       number_of_nodes = 5
-  #     }
-  #   }
-  #   resume = {
-  #     name           = "${local.name}-resume"
-  #     description    = "Resume cluster every morning"
-  #     schedule       = "cron(0 12 * * ? *)"
-  #     resume_cluster = true
-  #   }
-  # }
-
-  # Endpoint access - only available when using the ra3.x type
-  # create_endpoint_access          = true
-  # endpoint_name                   = "${local.name}-example"
-  # endpoint_subnet_group_name      = aws_redshift_subnet_group.endpoint.id
-  # endpoint_vpc_security_group_ids = [module.security_group.security_group_id]
-
-
   # Usage limits
-  usage_limits = {
-    currency_scaling = {
-      feature_type  = "concurrency-scaling"
-      limit_type    = "time"
-      amount        = 60
-      breach_action = "emit-metric"
-    }
-    spectrum = {
-      feature_type  = "spectrum"
-      limit_type    = "data-scanned"
-      amount        = 2
-      breach_action = "disable"
-      tags = {
-        Additional = "CustomUsageLimits"
-      }
-    }
-  }
+  
+    tags = local.tags
+  
 
   # Authentication profile
   # authentication_profiles = {
@@ -183,50 +121,24 @@ module "redshift" {
   #     }
   #   }
   # }
-
-}
-
-resource "aws_redshift_snapshot_copy" "this" {
-  cluster_identifier = module.redshift.cluster_id
-  destination_region = var.secondary_region
-  snapshot_copy_grant_name = aws_redshift_snapshot_copy_grant.secondary.snapshot_copy_grant_name
-}
-
-resource "aws_redshift_snapshot_copy_grant" "secondary" {
-  # Grants are declared outside of module because they are generally performed
-  # in the destination region and we do not embed multiple providers in the root module
-  provider = aws.secondary
-
-  snapshot_copy_grant_name = "${local.name}-${var.secondary_region}"
-  kms_key_id               = aws_kms_key.redshift_secondary.arn
-
-  tags = local.tags
 }
 
 ################################################################################
-# Cloudwatch Logging
+# Add tags to managed secret created by redshift
 ################################################################################
 
-# module "with_cloudwatch_logging" {
-#   source = ""
+data "aws_secretsmanager_secret" "redshift_password" {
+    arn = module.redshift.master_password_secret_arn
+    depends_on = [ module.redshift ]
 
-#   cluster_identifier = "${local.name}-with-cloudwatch-logging"
-#   node_type          = "dc2.large"
+}
+resource "terraform_data" "secret_manager_tags" {
 
-#   vpc_security_group_ids = [module.security_group.security_group_id]
-#   subnet_ids             = module.vpc.redshift_subnets
+  provisioner "local-exec" {
+    command = "aws secretsmanager tag-resource --secret-id ${data.aws_secretsmanager_secret.redshift_password.name} --tags '[{\"Key\": \"AmazonDataZoneDomain\", \"Value\": \"${var.datazone_domain_id}\"}, {\"Key\": \"AmazonDataZoneProject\", \"Value\": \"${var.datazone_project_id}\"}, {\"Key\": \"datazone.rs.cluster\", \"Value\": \"${module.redshift.cluster_identifier}:${module.redshift.cluster_database_name}\"}]' --region ${var.region}"
+  }
 
-#   create_cloudwatch_log_group            = true
-#   cloudwatch_log_group_retention_in_days = 7
-#   logging = {
-#     enable               = true
-#     log_destination_type = "cloudwatch"
-#     log_exports          = ["connectionlog", "userlog", "useractivitylog"]
-#   }
-
-#   tags = local.tags
-# }
-
+}
 
 ################################################################################
 # Supporting Resources
@@ -275,63 +187,6 @@ resource "aws_kms_key" "redshift" {
   tags = local.tags
 }
 
-resource "aws_kms_key" "redshift_secondary" {
-  provider = aws.secondary
-
-  description             = "Customer managed key for encrypting Redshift snapshot cross-region"
-  deletion_window_in_days = 7
-  enable_key_rotation     = true
-
-  tags = local.tags
-}
-
-data "aws_iam_policy_document" "s3_redshift" {
-  statement {
-    sid       = "RedshiftAcl"
-    actions   = ["s3:GetBucketAcl"]
-    resources = [module.s3_logs.s3_bucket_arn]
-
-    principals {
-      type        = "Service"
-      identifiers = ["redshift.amazonaws.com"]
-    }
-  }
-
-  statement {
-    sid       = "RedshiftWrite"
-    actions   = ["s3:PutObject"]
-    resources = ["${module.s3_logs.s3_bucket_arn}/${local.s3_prefix}*"]
-    condition {
-      test     = "StringEquals"
-      values   = ["bucket-owner-full-control"]
-      variable = "s3:x-amz-acl"
-    }
-
-    principals {
-      type        = "Service"
-      identifiers = ["redshift.amazonaws.com"]
-    }
-  }
-}
-
-module "s3_logs" {
-  source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.0"
-
-  bucket_prefix = local.name
-  acl           = "log-delivery-write"
-
-  control_object_ownership = true
-  object_ownership         = "ObjectWriter"
-
-  attach_policy = true
-  policy        = data.aws_iam_policy_document.s3_redshift.json
-
-  attach_deny_insecure_transport_policy = true
-  force_destroy                         = true
-
-  tags = local.tags
-}
 
 resource "aws_redshift_subnet_group" "endpoint" {
   name       = "${local.name}-endpoint"

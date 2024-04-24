@@ -4,6 +4,13 @@
   value       = vault_policy.policies
   description = "Sample helm values file that contains all of the configured paths that were created with this module. This should be used a reference and not a raw input to another object"
 } */
+output "datazome_domain_id" {
+  value = awscc_datazone_domain.this.domain_id
+}
+
+output "environment_project_id" {
+  value = awscc_datazone_project.this["environment"].project_id
+}
 output "s3_datazone" {
   value = aws_s3_bucket.datazone.id
 }

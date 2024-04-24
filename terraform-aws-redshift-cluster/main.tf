@@ -34,10 +34,7 @@ module "redshift" {
 
   database_name   = "mydb"
   master_username = "mydbuser"
-  # Either provide a good master password
-  #  create_random_password = false
-  #  master_password        = "******" # Do better!
-  # Or make Redshift manage it in secrets manager
+  
   manage_master_password = true
 
   manage_master_password_rotation              = true

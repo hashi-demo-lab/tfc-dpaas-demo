@@ -26,7 +26,7 @@ locals {
 
 module "redshift" {
   source = "terraform-aws-modules/redshift/aws"
-
+  version = "5.4.0"
   cluster_identifier    = local.name
   allow_version_upgrade = true
   node_type             = "dc2.large"

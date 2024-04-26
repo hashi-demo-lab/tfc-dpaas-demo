@@ -87,8 +87,8 @@ variable "datazone_projects" {
     }
   }
 }
-
-variable "datazone_environment_profiles" {
+# moved to terraform-aws-datazone-environments
+/* variable "datazone_environment_profiles" {
   description = "The environment profiles to deploy"
   type = map(object({
     aws_account_id                   = string
@@ -121,10 +121,10 @@ variable "datazone_environment_profiles" {
       project_name                     = "environment"
     }
   }
-}
+} */
 
-
-variable "datazone_environments" {
+# moved to terraform-aws-datazone-environments
+/* variable "datazone_environments" {
   description = "The environments to deploy"
   type = map(object({
     name                           = string
@@ -148,4 +148,4 @@ variable "datazone_environments" {
       project_target                 = "data_team"
     }
   }
-}
+} */

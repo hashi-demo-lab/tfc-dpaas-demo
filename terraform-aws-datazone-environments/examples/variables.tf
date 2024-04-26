@@ -1,3 +1,15 @@
+variable "organization" {
+  description = "The HCP Terraform organization name"
+  type        = string
+  default     = "tfc-demo-au"
+}
+
+variable "workspace_name" {
+  description = "The workspace to read outputs"
+  type        = string
+  default     = "datazone_domain"
+}
+
 variable "region" {
   description = "The region to deploy the domain"
   type        = string

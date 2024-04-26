@@ -116,8 +116,9 @@ resource "awscc_datazone_project" "this" {
 
 ################################################################################################
 # Due to separation of duties, the following resources below will be moved to a different module
+# moved to terraform-aws-datazone-environments/main.tf
 
-# create environment profiles(s)
+/* # create environment profiles(s)
 resource "awscc_datazone_environment_profile" "this" {
   for_each = var.datazone_environment_profiles
 
@@ -138,4 +139,4 @@ resource "awscc_datazone_environment" "this" {
   environment_profile_identifier = awscc_datazone_environment_profile.this[each.value.environment_profile_identifier].environment_profile_id
   name                           = each.value.name
   project_identifier             = awscc_datazone_project.this[each.value.project_target].project_id
-}
+} */

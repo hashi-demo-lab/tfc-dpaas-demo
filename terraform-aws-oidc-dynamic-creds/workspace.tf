@@ -11,7 +11,7 @@
 resource "aws_iam_role" "workspace_role" {
   count = local.is_project ? 0 : 1
 
-  name = "tfc-${var.tfc_organization_name}-${local.tfc_workspace_project_nospaces}-${var.tfc_workspace_name}"
+  name = "tfc-${var.tfc_organization_name}-${local.tfc_project_nospaces}-${var.tfc_workspace_name}"
 
   assume_role_policy = <<EOF
 {

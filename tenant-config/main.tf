@@ -68,7 +68,7 @@ module "project_oidc" {
   oidc_provider_client_id_list = [var.tfc_aws_audience]
   tfc_organization_name        = var.tfc_organization_name
   cred_type                    = var.cred_type
-  tfc_project_name             = module.consumer_project[each.key].project
+  tfc_project_name             = module.consumer_project[each.key].project_name
   tfc_project_id               = module.consumer_project[each.key].project_id
 
 }

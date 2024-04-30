@@ -5,6 +5,6 @@ output "bu" {
 }
 
 
-output "bu_project_list" {
-  value = local.bu_project_list
+output "bu_project_projects" {
+  value = local.bu_projects
 }

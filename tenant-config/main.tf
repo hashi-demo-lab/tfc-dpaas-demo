@@ -60,7 +60,7 @@ module "consumer_project" {
 
 }
 
-module "project_oidc" {
+/* module "project_oidc" {
   source = "github.com/hashi-demo-lab/tfc-dpaas-demo//terraform-aws-oidc-dynamic-creds"
   
   oidc_provider_arn            = aws_iam_openid_connect_provider.tfc_provider.arn
@@ -70,4 +70,4 @@ module "project_oidc" {
   tfc_project_name             = var.tfc_project_name
   tfc_project_id               = var.tfc_project_id
 
-}
+} */

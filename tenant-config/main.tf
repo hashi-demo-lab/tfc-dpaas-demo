@@ -46,7 +46,7 @@ resource "tfe_team" "bu_admin" {
 # Create the project and teams in Terraform Cloud
 module "consumer_project" {
   source = "github.com/hashi-demo-lab/terraform-tfe-project-team"
-  for_each = local.bu_projects_access # TO FIX - this is the wrong object should be per project
+  for_each = local.bu_projects_access 
 
 
   organization_name = var.tfc_organization_name
@@ -60,14 +60,15 @@ module "consumer_project" {
 
 }
 
-/* module "project_oidc" {
+module "project_oidc" {
   source = "github.com/hashi-demo-lab/tfc-dpaas-demo//terraform-aws-oidc-dynamic-creds"
+  for_each = module.consumer_project
   
   oidc_provider_arn            = aws_iam_openid_connect_provider.tfc_provider.arn
   oidc_provider_client_id_list = [var.tfc_aws_audience]
   tfc_organization_name        = var.tfc_organization_name
   cred_type                    = var.cred_type
-  tfc_project_name             = var.tfc_project_name
-  tfc_project_id               = var.tfc_project_id
+  tfc_project_name             = module.consumer_project[each.key].project
+  tfc_project_id               = module.consumer_project[each.key].project
 
-} */
+}

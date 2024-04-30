@@ -20,7 +20,7 @@ locals {
 }
 
 
-# typically this would be extracted from TFE resources and arn referenced as this  but consolidating for demo simplicity
+# typically this would be extracted from TFE resources and an arn referenced as requires higher privilege access but consolidating for demo simplicity
 # Data source used to grab the TLS certificate for Terraform Cloud.
 data "tls_certificate" "tfc_certificate" {
   url = "https://${var.tfc_hostname}"
@@ -62,7 +62,7 @@ module "consumer_project" {
 
 module "project_oidc" {
   source = "github.com/hashi-demo-lab/tfc-dpaas-demo//terraform-aws-oidc-dynamic-creds"
-
+  
   oidc_provider_arn            = aws_iam_openid_connect_provider.tfc_provider.arn
   oidc_provider_client_id_list = [var.tfc_aws_audience]
   tfc_organization_name        = var.tfc_organization_name

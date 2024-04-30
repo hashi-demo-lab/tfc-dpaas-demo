@@ -34,6 +34,15 @@ resource "aws_iam_openid_connect_provider" "tfc_provider" {
 }
 ############################################
 
+
+resource "tfe_team" "bu_admin" {
+  for_each = local.tenant
+
+  name         = "${each.value.bu}_admin"
+  organization = var.tfc_organization_name
+  sso_team_id  = try(each.value.value.team.sso_team_id, null)
+}
+
 # Create the project and teams in Terraform Cloud
 module "consumer_project" {
   source = "github.com/hashi-demo-lab/terraform-tfe-project-team"
@@ -41,13 +50,13 @@ module "consumer_project" {
 
 
   organization_name = var.tfc_organization_name
-  project_name      = "${each.value.bu}-${each.value.project}"
+  project_name      = "${each.value.bu}_${each.value.project}"
   business_unit     = each.value.bu
 
   team_project_access = try(each.value.value.team_project_access, {})
   custom_team_project_access = try(each.value.value.custom_team_project_access, {})
 
-  bu_control_admins_id = ""
+  bu_control_admins_id = tfe_team.bu_admin[each.value.bu].id
 
 }
 

@@ -3,12 +3,12 @@ projects:
   project1:
     description: project1 description
     team_project_access:
-      team3:
+      project1_maintain:
         access: "maintain"
         sso_team_id: null
   project2:
     description: project2 description
     team_project_access:
-      team4:
+      project2_maintain:
         access: "maintain"
         sso_team_id: null

@@ -1,3 +1,25 @@
+#read each yaml file in ./config/*.yaml
+locals {
+  config_file = flatten([for tenant in fileset(path.module, "config/*.yaml") : yamldecode(file(tenant))])
+  tenant      = { for bu in local.config_file : bu.bu => bu }
+  
+  bu_project_keys = merge([
+    for bu_key, bu_value in local.tenant : {
+      for project_key, project_value in bu_value.projects : 
+        "${bu_key}-${project_key}" => project_value
+    }
+  ]...)
+
+}
+
+
+
+output "bu_project_keys" {
+  value = local.bu_project_keys
+}
+
+
+# typically this would be extracted from TFE resources and arn referenced as this  but consolidating for demo simplicity
 # Data source used to grab the TLS certificate for Terraform Cloud.
 data "tls_certificate" "tfc_certificate" {
   url = "https://${var.tfc_hostname}"
@@ -8,6 +30,28 @@ resource "aws_iam_openid_connect_provider" "tfc_provider" {
   url             = data.tls_certificate.tfc_certificate.url
   client_id_list  = [var.tfc_aws_audience]
   thumbprint_list = [data.tls_certificate.tfc_certificate.certificates[0].sha1_fingerprint]
+}
+############################################
+
+# Create the project in Terraform Cloud
+module "consumer_project_team" {
+  source = "github.com/hashi-demo-lab/terraform-tfe-project-team"
+ 
+  organization_name = var.tfc_organization_name
+  project_name      = "test1"
+  business_unit     = "bu1"
+
+  team_project_access = {
+    "test1-team" = {
+      team = {
+        access      = "read"
+        sso_team_id = null
+        }
+    }
+  }
+  
+  bu_control_admins_id = ""
+  
 }
 
 

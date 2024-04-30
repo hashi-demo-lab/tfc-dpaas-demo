@@ -10,6 +10,11 @@ variable "tfc_organization_name" {
     default = "tfc-demo-au"
 }
 
+variable "business_unit" {
+  type = string
+  default = "bu1"
+}
+
 variable "tfc_hostname" {
     type = string
     description = "hcp terraform cloud hostname"
@@ -25,6 +30,7 @@ variable "tfc_aws_audience" {
 variable "tfc_project_name" {
     type = string
     description = "tfc project name"
+    default = "dataproject"
 }
 
 variable "tfc_project_id" {

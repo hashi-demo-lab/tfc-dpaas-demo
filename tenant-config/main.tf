@@ -15,7 +15,7 @@ locals {
   ])
 
   # convert list of bu_project_list to map
-  bu_projects = { for bu_project in local.bu_project_list : keys(bu_project)[0] => values(bu_project)[0] }
+  bu_projects_access = { for bu_project in local.bu_project_list : keys(bu_project)[0] => values(bu_project)[0] }
 
 }
 
@@ -35,9 +35,9 @@ resource "aws_iam_openid_connect_provider" "tfc_provider" {
 ############################################
 
 # Create the project and teams in Terraform Cloud
-module "consumer_project_team" {
+module "consumer_project" {
   source = "github.com/hashi-demo-lab/terraform-tfe-project-team"
-  for_each = local.bu_projects
+  for_each = local.bu_projects_access # TO FIX - this is the wrong object should be per project
 
 
   organization_name = var.tfc_organization_name

@@ -6,5 +6,5 @@ output "bu" {
 
 
 output "bu_project_projects" {
-  value = local.bu_projects
+  value = local.bu_projects_access
 }

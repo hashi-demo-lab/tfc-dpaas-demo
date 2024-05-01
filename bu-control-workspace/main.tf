@@ -65,7 +65,7 @@ module "workspace" {
   create_project              = try(each.value.create_project, false)
   project_name                = try(each.value.project_name, "")
   workspace_name              = each.value.workspace_name
-  workspace_description       = try(coalesce("${each.value.workspace_description} - ${module.github.github_repo}", "${each.value.workspace_description}" ), "")
+  workspace_description       = try(coalesce("${each.value.workspace_description} - ${module.github.github_repo}", "${each.value.workspace_description}"), "")
   workspace_terraform_version = try(each.value.workspace_terraform_version, "")
   workspace_tags              = try(each.value.workspace_tags, [])
   variables                   = try(each.value.variables, {})
@@ -91,7 +91,7 @@ module "workspace" {
   workspace_read_access_emails  = try(each.value.workspace_read_access_emails, [])
   workspace_write_access_emails = try(each.value.workspace_write_access_emails, [])
   workspace_plan_access_emails  = try(each.value.workspace_plan_access_emails, [])
-  oauth_token_id = var.oauth_token_id
+  oauth_token_id                = var.oauth_token_id
 }
 
 
@@ -118,5 +118,5 @@ resource "tfe_workspace_variable_set" "set" {
   variable_set_id = local.varset_out[each.value.var_sets.variable_set_name].variable_set[0].id
   workspace_id    = lookup(data.tfe_workspace_ids.all.ids, each.value.workspace_name)
 
-} 
+}
 

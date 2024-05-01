@@ -4,13 +4,13 @@ provider "aws" {
 
 terraform {
   cloud {
-    hostname = "app.terraform.io"
+    hostname     = "app.terraform.io"
     organization = "tfc-demo-au"
 
     workspaces {
-      name = "tfc-tenant-config"
+      name    = "tfc-tenant-config"
       project = "platform_team"
     }
-}
+  }
 
 }

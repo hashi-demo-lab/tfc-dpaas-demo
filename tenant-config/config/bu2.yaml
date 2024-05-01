@@ -1,13 +1,13 @@
 bu: bu2
 projects:
-  project1:
+  data_plaform1:
     description: project1 description
     team_project_access:
       project1_maintain:
         team:
           access: "maintain"
           sso_team_id: null
-  project2:
+  data_project1:
     description: project2 description
     team_project_access:
       project2_maintain:

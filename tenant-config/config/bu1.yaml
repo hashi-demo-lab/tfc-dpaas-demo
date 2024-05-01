@@ -7,7 +7,7 @@ projects:
         team:
           access: "maintain"
           sso_team_id: null
-  data_env1:
+  data_project1:
     description: data_environment 1
     team_project_access:
       data_env1_maintain:

@@ -1,16 +1,16 @@
 bu: bu1
 projects:
-  project1:
-    description: project1 description
+  data_plaform1:
+    description: data_plaform datazone domain
     team_project_access:
       project1_maintain:
         team:
           access: "maintain"
           sso_team_id: null
-  project2:
-    description: project2 description
+  data_env1:
+    description: data_environment 1
     team_project_access:
-      project2_maintain:
+      data_env1_maintain:
         team:
           access: "maintain"
           sso_team_id: null

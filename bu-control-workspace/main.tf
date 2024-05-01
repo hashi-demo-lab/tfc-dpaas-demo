@@ -28,7 +28,7 @@ module "terraform-tfe-variable-sets" {
 
   for_each = local.varsetMap
 
-  organization             = each.value.organization
+  organization             = var.organization
   create_variable_set      = try(each.value.create_variable_set, true)
   variables                = try(each.value.var_sets.variables, {})
   variable_set_name        = each.value.var_sets.variable_set_name
@@ -39,35 +39,33 @@ module "terraform-tfe-variable-sets" {
 
 
 module "github" {
-  source   = "github.com/hashi-demo-lab/terraform-github-repository-module?ref=v0.2.2"
+  source   = "github.com/hashi-demo-lab/terraform-github-repository-module?ref=0.5.1"
   for_each = local.workspaceRepos
 
-  github_org                       = each.value.github.github_org
-  github_org_owner                 = each.value.github.github_org_owner
+  github_org                       = try(each.value.github.github_org, var.github_org)
+  github_org_owner                 = try(each.value.github.github_org_owner, var.github_org_owner)
   github_repo_name                 = each.value.github.github_repo_name
   github_repo_desc                 = try(each.value.github.github_repo_desc, "")
-  github_repo_visibility           = try(each.value.github.github_repo_visibility, "private")
-  github_team_name                 = try(each.value.github.github_team_name, "")
-  github_template_owner            = try(each.value.github.github_template_owner, "hashicorp-demo-lab")
-  github_repo_permission           = try(each.value.github.github_repo_permission, "admin")
-  github_template_repo             = try(each.value.github.github_template_repo, "terraform-template")
+  github_repo_visibility           = try(each.value.github.github_repo_visibility, "public")
+  github_template_owner            = try(each.value.github.github_template_owner, "hashi-demo-lab")
+  github_template_name             = try(each.value.github.github_template_repo, "tf-template")
   github_template_include_branches = try(each.value.github.github_template_include_branches, false)
 }
 
 module "workspace" {
-  source = "github.com/hashi-demo-lab/terraform-tfe-onboarding-module?ref=0.5.0"
+  source = "github.com/hashi-demo-lab/terraform-tfe-onboarding-module?ref=0.5.3"
 
-  depends_on = [
+  /* depends_on = [
     module.github
-  ]
+  ] */
 
   for_each = local.workspaces
 
-  organization                = each.value.organization
+  organization                = var.organization
   create_project              = try(each.value.create_project, false)
   project_name                = try(each.value.project_name, "")
   workspace_name              = each.value.workspace_name
-  workspace_description       = try(each.value.workspace_description, "")
+  workspace_description       = try(coalesce("${each.value.workspace_description} - ${module.github.github_repo}", "${each.value.workspace_description}" ), "")
   workspace_terraform_version = try(each.value.workspace_terraform_version, "")
   workspace_tags              = try(each.value.workspace_tags, [])
   variables                   = try(each.value.variables, {})
@@ -93,6 +91,7 @@ module "workspace" {
   workspace_read_access_emails  = try(each.value.workspace_read_access_emails, [])
   workspace_write_access_emails = try(each.value.workspace_write_access_emails, [])
   workspace_plan_access_emails  = try(each.value.workspace_plan_access_emails, [])
+  oauth_token_id = var.oauth_token_id
 }
 
 

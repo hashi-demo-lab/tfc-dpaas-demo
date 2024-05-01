@@ -17,3 +17,7 @@ provider "github" {
   # Configuration options
   owner = var.github_org
 }
+
+provider "tfe" {
+  organization = var.organization
+}

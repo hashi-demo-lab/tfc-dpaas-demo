@@ -1,25 +1,3 @@
-#read each yaml file in ./config/*.yaml
-locals {
-  config_file = flatten([for tenant in fileset(path.module, "config/*.yaml") : yamldecode(file(tenant))])
-  tenant      = { for bu in local.config_file : bu.bu => bu }
-
-  bu_project_list = flatten([
-    for bu_key, bu_value in local.tenant : [
-      for project_key, project_value in bu_value.projects : { "${bu_key}-${project_key}" : {
-        bu      = bu_key
-        project = project_key
-        value   = project_value
-        }
-      }
-    ]
-  ])
-
-  # convert list of bu_project_list to map
-  bu_projects_access = { for bu_project in local.bu_project_list : keys(bu_project)[0] => values(bu_project)[0] }
-
-}
-
-
 # typically OIDC config would be extracted from TFE resources and an arn referenced as this requires higher privilege access 
 # and usually cross-account workflow but consolidating for demo simplicity
 # Data source used to grab the TLS certificate for Terraform Cloud.

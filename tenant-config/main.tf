@@ -20,7 +20,8 @@ locals {
 }
 
 
-# typically this would be extracted from TFE resources and an arn referenced as requires higher privilege access but consolidating for demo simplicity
+# typically OIDC config would be extracted from TFE resources and an arn referenced as this requires higher privilege access 
+# and usually cross-account workflow but consolidating for demo simplicity
 # Data source used to grab the TLS certificate for Terraform Cloud.
 data "tls_certificate" "tfc_certificate" {
   url = "https://${var.tfc_hostname}"

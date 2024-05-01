@@ -50,7 +50,7 @@ EOF
 
 resource "tfe_variable_set" "creds" {
   count        = local.is_project ? 1 : 0
-  name         = "AWS Dynamic Creds: ${var.tfc_project_name} Project"
+  name         = "${var.tfc_project_name}_aws_oid_dynamic_credentials"
   description  = "AWS Auth & Role details for Dynamic AWS Creds"
   organization = var.tfc_organization_name
 }

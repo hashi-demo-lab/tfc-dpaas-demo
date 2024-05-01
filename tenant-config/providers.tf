@@ -8,7 +8,7 @@ terraform {
     organization = "tfc-demo-au"
 
     workspaces {
-      name    = "platform-tenant-config"
+      name    = "tfc-tenant-config"
       project = "platform_team"
     }
   }

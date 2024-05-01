@@ -63,6 +63,35 @@ resource "tfe_team_project_access" "bu_control" {
   team_id    = tfe_team.bu_admin[each.key].id
 }
 
+data "tfe_project" "platform_team" {
+  name         = "platform_team"
+  organization = var.tfc_organization_name
+}
+
+# allow bu admins to read the platform workspace outputs
+resource "tfe_team_project_access" "read_output" {
+  for_each   = local.tenant
+  access       = "custom"
+  team_id      = tfe_team.bu_admin[each.key].id
+  project_id   = data.tfe_project.platform_team.id
+
+  project_access {
+    settings = "read"
+    teams    = "none"
+  }
+  workspace_access {
+    state_versions = "read-outputs"
+    sentinel_mocks = "none"
+    runs           = "read"
+    variables      = "none"
+    create         = false
+    locking        = false
+    move           = false
+    delete         = false
+    run_tasks      = false
+  }
+}
+
 resource "tfe_workspace" "bu_control" {
   for_each           = local.tenant
   name               = "${each.value.bu}_workspace_control"

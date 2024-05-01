@@ -14,3 +14,10 @@ projects:
         team:
           access: "maintain"
           sso_team_id: null
+  data_project2:
+    description: data_environment 1
+    team_project_access:
+      data_env1_maintain:
+        team:
+          access: "maintain"
+          sso_team_id: null

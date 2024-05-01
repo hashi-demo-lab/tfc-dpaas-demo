@@ -43,6 +43,21 @@ resource "tfe_team" "bu_admin" {
   sso_team_id  = try(each.value.value.team.sso_team_id, null)
 }
 
+resource "tfe_project" "bu_control" {
+  for_each = local.tenant
+  name     = "${each.value.bu}_control"
+  organization = var.tfc_organization_name
+}
+
+resource "tfe_workspace" "bu_control" {
+  for_each = local.tenant
+  name     = "${each.value.bu}_workspace_control"
+  organization = var.tfc_organization_name
+  auto_apply = false
+  allow_destroy_plan = false
+  project_id =  tfe_project.bu_control[each.key].id
+}
+
 # Create the project and teams in Terraform Cloud
 module "consumer_project" {
   source = "github.com/hashi-demo-lab/terraform-tfe-project-team"
@@ -57,8 +72,8 @@ module "consumer_project" {
   custom_team_project_access = try(each.value.value.custom_team_project_access, {})
 
   bu_control_admins_id = tfe_team.bu_admin[each.value.bu].id
-
 }
+
 
 module "project_oidc" {
   source = "github.com/hashi-demo-lab/tfc-dpaas-demo//terraform-aws-oidc-dynamic-creds"

@@ -11,6 +11,6 @@ output "project_id" {
   value = module.workspace
 }
 
-output "bu_project" {
-  value = var.bu_project
+output "bu_projects" {
+  value = var.bu_projects
 }

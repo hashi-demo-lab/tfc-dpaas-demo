@@ -21,6 +21,7 @@ locals {
   ])
   #convert to a Map with variabel set name as key
   varsetMap = { for varset in local.workspace_varset : varset.var_sets.variable_set_name => varset }
+
 }
 
 module "terraform-tfe-variable-sets" {
@@ -54,7 +55,8 @@ module "github" {
 
 module "workspace" {
   source = "github.com/hashi-demo-lab/terraform-tfe-onboarding-module?ref=0.5.6"
-
+  
+  # removed explicit dependency moved to implicit dependency this is safer and more efficient
   /* depends_on = [
     module.github
   ] */
@@ -64,7 +66,7 @@ module "workspace" {
   organization                = var.organization
   create_project              = try(each.value.create_project, false)
   project_name                = try(each.value.project_name, null)
-  project_id                  = try(jsondecode(var.bu_project)[each.value.project_name], null)
+  project_id                  = try(jsondecode(var.bu_projects)[each.value.project_name], null)
   workspace_name              = each.value.workspace_name
   workspace_description       = try(coalesce("${each.value.workspace_description} - ${module.github.github_repo}", "${each.value.workspace_description}"), "")
   workspace_terraform_version = try(each.value.workspace_terraform_version, "")

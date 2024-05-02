@@ -17,6 +17,7 @@ terraform {
 
     workspaces {
       name = "bu1_workspace_control"
+      project = "bu1_control"
     }
   }
 

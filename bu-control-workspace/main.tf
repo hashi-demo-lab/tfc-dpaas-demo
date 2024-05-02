@@ -53,7 +53,7 @@ module "github" {
 }
 
 module "workspace" {
-  source = "github.com/hashi-demo-lab/terraform-tfe-onboarding-module?ref=0.5.3"
+  source = "github.com/hashi-demo-lab/terraform-tfe-onboarding-module?ref=0.5.6"
 
   /* depends_on = [
     module.github
@@ -63,7 +63,8 @@ module "workspace" {
 
   organization                = var.organization
   create_project              = try(each.value.create_project, false)
-  project_name                = try(each.value.project_name, "")
+  project_name                = try(each.value.project_name, null)
+  project_id                  = try(jsondecode(var.bu_project)[each.value.project_name], null)
   workspace_name              = each.value.workspace_name
   workspace_description       = try(coalesce("${each.value.workspace_description} - ${module.github.github_repo}", "${each.value.workspace_description}"), "")
   workspace_terraform_version = try(each.value.workspace_terraform_version, "")

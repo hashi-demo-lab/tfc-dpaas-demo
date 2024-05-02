@@ -11,7 +11,17 @@ terraform {
       version = "0.54.0"
     }
   }
+
+  cloud {
+    organization = "tfc-demo-au"
+
+    workspaces {
+      name = "bu1_workspace_control"
+    }
+  }
+
 }
+
 
 provider "github" {
   # Configuration options

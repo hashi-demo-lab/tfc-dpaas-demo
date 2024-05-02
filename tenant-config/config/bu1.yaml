@@ -6,18 +6,15 @@ projects:
       data_plaform1_maintain:
         team:
           access: "maintain"
-          sso_team_id: null
   data_project1:
     description: data_environment 1
     team_project_access:
       data_project1_maintain:
         team:
           access: "maintain"
-          sso_team_id: null
   data_project2:
     description: data_environment 1
     team_project_access:
       data_project2_maintain:
         team:
           access: "maintain"
-          sso_team_id: null

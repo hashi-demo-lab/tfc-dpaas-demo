@@ -5,7 +5,7 @@ locals {
 
   bu_project_list = flatten([
     for bu_key, bu_value in local.tenant : [
-      for project_key, project_value in bu_value.projects : { "${bu_key}-${project_key}" : {
+      for project_key, project_value in bu_value.projects : { "${bu_key}_${project_key}" : {
         bu      = bu_key
         project = project_key
         value   = project_value

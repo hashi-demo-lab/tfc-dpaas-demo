@@ -1,5 +1,5 @@
 workspace_name: vcs-driven-newrepo
-project_name: bu1_project1
+project_name: bu1_data_plaform1
 create_repo: true
 create_variable_set: false
 github:

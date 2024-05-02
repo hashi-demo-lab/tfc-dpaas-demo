@@ -20,3 +20,9 @@ variable "oauth_token_id" {
   type        = string
   default     = "ot-73RZh1G9E1ySnrRY"
 }
+
+variable "bu_project" {
+  description = "project json lookup - this populated by platform tenant config"
+  type        = string
+  default     = null
+}

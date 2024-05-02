@@ -29,6 +29,7 @@ resource "tfe_team_token" "bu_admin" {
 
 resource "tfe_variable_set" "bu_admin" {
   for_each     = local.tenant
+
   name         = "${each.value.bu}_admin"
   description  = "${each.value.bu} varset Managed by Terraform"
   organization = var.tfc_organization_name
@@ -36,6 +37,7 @@ resource "tfe_variable_set" "bu_admin" {
 
 resource "tfe_variable" "bu_admin" {
   for_each        = local.tenant
+
   key             = "TFE_TOKEN"
   value           = tfe_team_token.bu_admin[each.key].token
   category        = "env"
@@ -43,6 +45,18 @@ resource "tfe_variable" "bu_admin" {
   sensitive       = true
   variable_set_id = tfe_variable_set.bu_admin[each.key].id
 }
+
+resource "tfe_variable" "bu_projects" {
+  for_each        = local.tenant
+
+  key             = "bu_projects"
+  value           = jsonencode({ for projectKey, projectValue in module.consumer_project : projectKey => projectValue.project_id if projectValue.bu == "${each.value.bu}" })
+  category        = "terraform"
+  description     = "${each.value.bu} bu project ids"
+  sensitive       = false
+  variable_set_id = tfe_variable_set.bu_admin[each.key].id
+}
+
 
 resource "tfe_project_variable_set" "bu_admin" {
   for_each        = local.tenant
@@ -52,12 +66,14 @@ resource "tfe_project_variable_set" "bu_admin" {
 
 resource "tfe_project" "bu_control" {
   for_each     = local.tenant
+
   name         = "${each.value.bu}_control"
   organization = var.tfc_organization_name
 }
 
 resource "tfe_team_project_access" "bu_control" {
   for_each   = local.tenant
+
   access     = "maintain"
   project_id = tfe_project.bu_control[each.key].id
   team_id    = tfe_team.bu_admin[each.key].id

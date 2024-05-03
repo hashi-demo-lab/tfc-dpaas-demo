@@ -3,11 +3,14 @@ modules:
     module_name: "terraform-awscc-datazone-environments"
     module_short_name: datazone-environments
     provider: "awscc"
+    tests_enabled: true
   terraform-awscc-datazone-domain:
     module_name: "terraform-awscc-datazone-domain"
     module_short_name: datazone-domain
     provider: "awscc"
+    tests_enabled: true
   terraform-aws-redshift-cluster:
     module_name: "terraform-aws-redshift-cluster"
     module_short_name: redshift-cluster
     provider: "aws"
+    tests_enabled: true

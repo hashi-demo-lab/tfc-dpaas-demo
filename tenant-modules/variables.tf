@@ -6,14 +6,11 @@ variable "oauth_token" {
 variable "tfc_organization_name" {
   type        = string
   description = "Name of the TFC organization"
-
-  default = "tfc-demo-au"
 }
 
 variable "github_org" {
   type        = string
   description = "GitHub organization name"
-  default     = "hashi-demo-lab"
 }
 
 variable "branch" {
@@ -22,11 +19,6 @@ variable "branch" {
   default     = "main"
 }
 
-variable "module_name" {
-  type        = string
-  description = "Name of the module"
-
-}
 variable "tests_enabled" {
   type        = bool
   description = "Enable tests for the module"

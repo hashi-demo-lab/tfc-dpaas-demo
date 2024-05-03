@@ -1,13 +1,13 @@
 
 locals {
-  modules_config = yamldecode( file("${path.module}/config/modules.yaml") )
+  modules_config = yamldecode(file("${path.module}/config/modules.yaml"))
 }
 
 resource "tfe_registry_module" "test-registry-module" {
   for_each = local.modules_config.modules
 
   test_config {
-    tests_enabled = var.tests_enabled
+    tests_enabled = try(each.value.tests_enabled, var.tests_enabled)
   }
 
   vcs_repo {

@@ -4,13 +4,25 @@ modules:
     module_short_name: datazone-environments
     provider: "awscc"
     tests_enabled: true
+    pipeline_vars:
+      TFE_ORG: tfc-demo-au
+      TFE_MODULE: datazone-environments
+      TFE_PROVIDER: awscc
   terraform-awscc-datazone-domain:
     module_name: "terraform-awscc-datazone-domain"
     module_short_name: datazone-domain
     provider: "awscc"
     tests_enabled: true
+    pipeline_vars:
+      TFE_ORG: tfc-demo-au
+      TFE_MODULE: datazone-domain
+      TFE_PROVIDER: awscc
   terraform-aws-redshift-cluster:
     module_name: "terraform-aws-redshift-cluster"
     module_short_name: redshift-cluster
     provider: "aws"
     tests_enabled: true
+    pipeline_vars:
+      TFE_ORG: tfc-demo-au
+      TFE_MODULE: redshift-cluster
+      TFE_PROVIDER: aws

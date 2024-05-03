@@ -3,7 +3,7 @@ locals {
   modules_config = yamldecode(file("${path.module}/config/modules.yaml"))
 }
 
-resource "tfe_registry_module" "test-registry-module" {
+resource "tfe_registry_module" "publish" {
   for_each = local.modules_config.modules
 
   test_config {

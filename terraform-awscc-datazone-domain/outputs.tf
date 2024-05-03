@@ -4,7 +4,14 @@
   value       = vault_policy.policies
   description = "Sample helm values file that contains all of the configured paths that were created with this module. This should be used a reference and not a raw input to another object"
 } */
-output "datazome_domain_id" {
+output "datazone_role_id" {
+  value = awscc_iam_role.this.role_id
+}
+
+output "datazone_role_arn" {
+  value = awscc_iam_role.this.arn
+}
+output "datazone_domain_id" {
   value = awscc_datazone_domain.this.domain_id
 }
 

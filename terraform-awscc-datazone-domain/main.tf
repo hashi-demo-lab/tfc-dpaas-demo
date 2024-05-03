@@ -1,6 +1,6 @@
 data "aws_caller_identity" "current" {}
 
-#Execution role to be attached to Datazone Domain, has to be pre-created
+#Execution role to be attached to Datazone Domain, has to be 
 resource "awscc_iam_role" "this" {
   path = "/service-role/"
   assume_role_policy_document = jsonencode({

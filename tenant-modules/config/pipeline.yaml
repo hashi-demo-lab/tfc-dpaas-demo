@@ -1,8 +1,0 @@
-pipeline:
-  labels:
-    semver:patch:
-      color: '#ffd000'
-    semver:minor:
-      color: '#ff8a00'
-    semver:major:
-      color: '#ff5e00'

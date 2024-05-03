@@ -15,5 +15,6 @@ resource "tfe_registry_module" "publish" {
     identifier         = "${var.github_org}/${each.value.module_name}"
     oauth_token_id     = var.oauth_token
     branch             = var.branch
+    tags = false
   }
 }

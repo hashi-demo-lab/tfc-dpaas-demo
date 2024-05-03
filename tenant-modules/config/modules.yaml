@@ -1,0 +1,7 @@
+modules:
+  terraform-awscc-datazone-environments:
+    module_name: "terraform-awscc-datazone-environments"
+  terraform-awscc-datazone-domain:
+    module_name: "terraform-awscc-datazone-domain"
+  terraform-aws-redshift-cluster:
+    module_name: "terraform-aws-redshift-cluster"

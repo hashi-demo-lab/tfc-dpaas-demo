@@ -3,6 +3,7 @@ locals {
   modules_config = yamldecode(file("${path.module}/config/modules.yaml"))
 }
 
+# publish modules to HCP Terraform registry
 resource "tfe_registry_module" "publish" {
   for_each = local.modules_config.modules
 
@@ -19,7 +20,7 @@ resource "tfe_registry_module" "publish" {
   }
 }
 
-#add labels used for module publishing pipeline
+# add labels used for module publishing pipeline to identify semver
 resource "github_issue_labels" "module" {
   for_each = local.modules_config.modules
 
@@ -62,6 +63,7 @@ output "test" {
   value = local.var_map
 }
 
+#set variable used by module publishing pipeline
 resource "github_actions_variable" "module" {
   for_each = local.var_map
 

@@ -5,9 +5,9 @@ modules:
     provider: "awscc"
     tests_enabled: true
     labels:
-      semver:patch
-      semver:minor
-      semver:major
+      semver:patch: ffff00
+      semver:minor: ff8a00
+      semver:major: ff0000
     pipeline_vars:
       TFE_ORG: tfc-demo-au
       TFE_MODULE: datazone-environments
@@ -18,9 +18,9 @@ modules:
     provider: "awscc"
     tests_enabled: true
     labels:
-      semver:patch
-      semver:minor
-      semver:major
+      semver:patch: ffff00
+      semver:minor: ff8a00
+      semver:major: ff0000
     pipeline_vars:
       TFE_ORG: tfc-demo-au
       TFE_MODULE: datazone-domain
@@ -31,9 +31,9 @@ modules:
     provider: "aws"
     tests_enabled: true
     labels:
-      semver:patch
-      semver:minor
-      semver:major
+      semver:patch: ffff00
+      semver:minor: ff8a00
+      semver:major: ff0000
     pipeline_vars:
       TFE_ORG: tfc-demo-au
       TFE_MODULE: redshift-cluster

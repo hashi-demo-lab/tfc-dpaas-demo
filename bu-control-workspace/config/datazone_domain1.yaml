@@ -1,13 +1,13 @@
-workspace_name: vcs-driven-newrepo
+workspace_name: datazone_domain1
 project_name: bu1_data_plaform1
 create_repo: true
 create_variable_set: false
 github:
-  github_repo_name: "createrepotest3"
+  github_repo_name: "datazone_domain1"
   github_repo_desc: "Rep created by terraform"
   github_repo_visibility: "public"
   github_template_owner: "hashi-demo-lab"
-  github_template_repo: "tf-template"
+  github_template_repo: "template-datazone-domain"
 vcs_repo:
-  identifier: hashi-demo-lab/createrepotest3
+  identifier: hashi-demo-lab/datazone_domain1
   branch: main

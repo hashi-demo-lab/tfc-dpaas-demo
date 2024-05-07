@@ -4,7 +4,7 @@ create_repo: true
 create_variable_set: false
 github:
   github_repo_name: "datazone_domain4"
-  github_repo_desc: "Rep created by terraform"
+  github_repo_desc: "created by terraform"
   github_repo_visibility: "public"
   github_template_owner: "hashi-demo-lab"
   github_template_repo: "template-datazone-domain"

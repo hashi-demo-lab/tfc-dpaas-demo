@@ -7,17 +7,16 @@ projects:
       data_plaform1_maintain:
         team:
           access: "maintain"
-  data_project1:
-    name: data_project1
-    description: data_environment 1
+      data_plaform1_write:
+        team:
+          access: "write"
+  data_plaform2:
+    name: data_platform2
+    description: data_platform datazone domain
     team_project_access:
-      data_project1_maintain:
+      data_plaform2_maintain:
         team:
           access: "maintain"
-  data_project2:
-    name: data_project2
-    description: data_environment 1
-    team_project_access:
-      data_project2_maintain:
+      data_plaform2_write:
         team:
-          access: "maintain"
+          access: "write"

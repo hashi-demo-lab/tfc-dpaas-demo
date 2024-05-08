@@ -1,5 +1,5 @@
 workspace_name: redshift_cluster7
-project_name: bu1_data_project1
+project_name: bu1_data_plaform1
 create_repo: true
 create_variable_set: false
 github:

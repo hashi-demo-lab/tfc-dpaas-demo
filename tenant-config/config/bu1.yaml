@@ -1,7 +1,7 @@
 bu: bu1
 projects:
   data_plaform1:
-    name: data_plaform1
+    name: data_platform1
     description: data_plaform datazone domain
     team_project_access:
       data_platform1_maintain:

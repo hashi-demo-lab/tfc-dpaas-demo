@@ -112,7 +112,7 @@ resource "awscc_datazone_project" "this" {
   glossary_terms    = try(each.value.glossary_terms)
 }
 
-variable "revision" {
+/* variable "revision" {
   default = "7"
 }
 ######
@@ -139,4 +139,4 @@ export AWS_SESSION_TOKEN="$${CREDENTIALS[2]}"
 aws datazone create-project-membership --domain-identifier ${each.value.domain_id} --designation PROJECT_OWNER --region ${var.region} --project-identifier ${each.value.project_id} --member '{"userIdentifier":"arn:aws:iam::855831148133:role/aws_simon.lynch_test-developer"}' --output json
 EOF
   }
-}
+} */

@@ -112,31 +112,31 @@ resource "awscc_datazone_project" "this" {
   glossary_terms    = try(each.value.glossary_terms)
 }
 
-
-
-################################################################################################
-# Due to separation of duties, the following resources below will be moved to a different module
-# moved to terraform-aws-datazone-environments/main.tf
-
-/* # create environment profiles(s)
-resource "awscc_datazone_environment_profile" "this" {
-  for_each = var.datazone_environment_profiles
-
-  aws_account_id                   = each.value.aws_account_id
-  aws_account_region               = each.value.region
-  domain_identifier                = awscc_datazone_domain.this.id
-  environment_blueprint_identifier = awscc_datazone_environment_blueprint_configuration.this[each.value.environment_blueprint_identifier].environment_blueprint_id
-  name                             = each.key
-  description                      = try(each.value.description)
-  project_identifier               = awscc_datazone_project.this[each.value.project_name].project_id
-  user_parameters                  = try(each.value.user_parameters)
+variable "revision" {
+  default = "7"
 }
+######
+###### This is a workaround due to lack of support in AWS Cloud Control API for managing IAM users
+resource "terraform_data" "aws" {
+  for_each = awscc_datazone_project.this
+  
+  input = var.revision
 
-resource "awscc_datazone_environment" "this" {
-  for_each = var.datazone_environments
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    command     = <<EOF
+set -e
+CREDENTIALS=(`aws sts assume-role-with-web-identity --role-arn arn:aws:iam::855831148133:role/tfc-tfc-demo-au-retail_data_plaform --role-session-name build-session --web-identity-token $(cat $HOME/tfc-aws-token) --duration-seconds 1000 \
+  --query "[Credentials.AccessKeyId,Credentials.SecretAccessKey,Credentials.SessionToken]" \
+  --output text`)
 
-  domain_identifier              = awscc_datazone_domain.this.id
-  environment_profile_identifier = awscc_datazone_environment_profile.this[each.value.environment_profile_identifier].environment_profile_id
-  name                           = each.value.name
-  project_identifier             = awscc_datazone_project.this[each.value.project_target].project_id
-} */
+unset AWS_PROFILE
+export AWS_DEFAULT_REGION=ap-southeast-2
+export AWS_ACCESS_KEY_ID="$${CREDENTIALS[0]}"
+export AWS_SECRET_ACCESS_KEY="$${CREDENTIALS[1]}"
+export AWS_SESSION_TOKEN="$${CREDENTIALS[2]}"
+
+aws datazone create-project-membership --domain-identifier ${each.value.domain_id} --designation PROJECT_OWNER --region ${var.region} --project-identifier ${each.value.project_id} --member '{"userIdentifier":"arn:aws:iam::855831148133:role/aws_simon.lynch_test-developer"}' --output json
+EOF
+  }
+}

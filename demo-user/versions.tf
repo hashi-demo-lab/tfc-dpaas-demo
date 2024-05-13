@@ -10,8 +10,8 @@ terraform {
     organization = "tfc-demo-au"
 
     workspaces {
-      name    = "bu1_project_addmembers"
-      project = "bu1_data_platform1"
+      name    = "retail_project_addmembers"
+      project = "retail_data_plaform"
     }
   }
 }

@@ -1,19 +1,3 @@
-# typically OIDC config would be extracted from TFE resources and an arn referenced as this requires higher privilege access 
-# and usually cross-account workflow but consolidating for demo simplicity
-# Data source used to grab the TLS certificate for Terraform Cloud.
-data "tls_certificate" "tfc_certificate" {
-  url = "https://${var.tfc_hostname}"
-}
-
-# Creates an OIDC provider which is restricted to
-resource "aws_iam_openid_connect_provider" "tfc_provider" {
-  url             = data.tls_certificate.tfc_certificate.url
-  client_id_list  = [var.tfc_aws_audience]
-  thumbprint_list = [data.tls_certificate.tfc_certificate.certificates[0].sha1_fingerprint]
-}
-############################################
-
-
 resource "tfe_team" "bu_admin" {
   for_each = local.tenant
 
@@ -131,18 +115,4 @@ module "consumer_project" {
   custom_team_project_access = try(each.value.value.custom_team_project_access, {})
 
   bu_control_admins_id = tfe_team.bu_admin[each.value.bu].id
-}
-
-
-module "project_oidc" {
-  source   = "github.com/hashi-demo-lab/tfc-dpaas-demo//terraform-aws-oidc-dynamic-creds"
-  for_each = module.consumer_project
-
-  oidc_provider_arn            = aws_iam_openid_connect_provider.tfc_provider.arn
-  oidc_provider_client_id_list = [var.tfc_aws_audience]
-  tfc_organization_name        = var.tfc_organization_name
-  cred_type                    = var.cred_type
-  tfc_project_name             = module.consumer_project[each.key].project_name
-  tfc_project_id               = module.consumer_project[each.key].project_id
-
 }

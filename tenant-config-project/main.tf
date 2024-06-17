@@ -58,12 +58,12 @@ resource "tfe_project" "bu_control" {
 resource "tfe_team_project_access" "bu_control" {
   for_each   = local.tenant
 
-  access     = "maintain"
+  access     = "admin"
   project_id = tfe_project.bu_control[each.key].id
   team_id    = tfe_team.bu_admin[each.key].id
 }
 
-data "tfe_project" "platform_team" {
+/* data "tfe_project" "platform_team" {
   name         = "platform_team"
   organization = var.tfc_organization_name
 }
@@ -91,7 +91,7 @@ resource "tfe_team_project_access" "read_output" {
     run_tasks      = false
   }
 }
-
+ */
 resource "tfe_workspace" "bu_control" {
   for_each           = local.tenant
   name               = "${each.value.bu}_workspace_control"

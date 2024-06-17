@@ -103,7 +103,7 @@ resource "tfe_workspace" "bu_control" {
 
 # Create the project and teams in Terraform Cloud
 module "consumer_project" {
-  source   = "github.com/hashi-demo-lab/terraform-tfe-project-team?ref=0.1.0"
+  source   = "github.com/hashi-demo-lab/terraform-tfe-project-team?ref=0.1.1"
   for_each = local.bu_projects_access
 
 

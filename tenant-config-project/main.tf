@@ -116,4 +116,29 @@ module "consumer_project" {
   custom_team_project_access = try(each.value.value.custom_team_project_access, {})
 
   bu_control_admins_id = tfe_team.bu_admin[each.value.bu].id
+
 }
+
+
+/* resource "tfe_team_project_access" "read_output" {
+  for_each   = { for key in local.read-outputs : key => local.read-outputs[key].team_project_access }
+  access       = "custom"
+  team_id      = module.consumer_project[each.key].team_id
+  project_id   = module.consumer_project[each.value.read_outputs.key]
+
+  project_access {
+    settings = "read"
+    teams    = "none"
+  }
+  workspace_access {
+    state_versions = "read-outputs"
+    sentinel_mocks = "none"
+    runs           = "read"
+    variables      = "none"
+    create         = false
+    locking        = false
+    move           = false
+    delete         = false
+    run_tasks      = false
+  }
+} */

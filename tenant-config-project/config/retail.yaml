@@ -12,7 +12,7 @@ projects:
         team:
           access: "write"
     read-outputs:
-      cdao_data_nonprod:
+      cdao_data_prod:
         project: cdao_data_prod
         access: read-outputs 
   data_nonprod:

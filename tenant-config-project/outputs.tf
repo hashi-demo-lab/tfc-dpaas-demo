@@ -5,4 +5,4 @@ output "projects" {
 
 output "projects_project_access" {
   value = local.bu_projects_access
-}
+} 

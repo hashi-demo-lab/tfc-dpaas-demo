@@ -1,0 +1,22 @@
+bu: cdao
+projects:
+  cdao_prod:
+    name: cdao_prod
+    description: cdao prod data platform
+    team_project_access:
+      cdao_prod_maintain:
+        team:
+          access: "maintain"
+      cdao_prod_write:
+        team:
+          access: "write"
+  cdao_nonprod:
+    name: cdao_nonprod
+    description: cdao prod data platform
+    team_project_access:
+      cdao_nonprod_maintain:
+        team:
+          access: "maintain"
+      cdao_nonprod_write:
+        team:
+          access: "write"

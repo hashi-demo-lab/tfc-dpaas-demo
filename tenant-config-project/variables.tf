@@ -7,7 +7,6 @@ variable "cred_type" {
 variable "tfc_organization_name" {
   type        = string
   description = "hcp terraform cloud organization name"
-  default     = "tfc-demo-au"
 }
 
 variable "business_unit" {
@@ -18,7 +17,7 @@ variable "business_unit" {
 variable "tfc_hostname" {
   type        = string
   description = "hcp terraform cloud hostname"
-  default     = "app.terraform.io"
+  default     = "tfe.simon-lynch.sbx.hashidemos.io"
 }
 
 variable "tfc_aws_audience" {

@@ -17,4 +17,7 @@ locals {
   # convert list of bu_project_list to map
   bu_projects_access = { for bu_project in local.bu_project_list : keys(bu_project)[0] => values(bu_project)[0] }
 
+
+  read-outputs = { for key, value in local.bu_projects_access : key => value if length(value.value["read-outputs"]) > 0}
+
 }

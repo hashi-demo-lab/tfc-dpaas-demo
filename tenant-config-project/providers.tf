@@ -4,7 +4,7 @@ provider "aws" {
 
 terraform {
   cloud {
-    hostname     = "app.terraform.io"
+    hostname     = "tfe.simon-lynch.sbx.hashidemos.io"
     organization = "tfc-demo-au"
 
     workspaces {

@@ -14,15 +14,30 @@ locals {
     ]
   ])
 
+
+read_outputs_map = { for key, value in local.bu_projects_access : key => value if length(value.value["read-outputs"]) > 0}
+
   # convert list of bu_project_list to map
   bu_projects_access = { for bu_project in local.bu_project_list : keys(bu_project)[0] => values(bu_project)[0] }
 
+  read_output_keys = flatten([ for proj_key, proj_value in local.read_outputs_map  : [
+    for key, value in proj_value.value.team_project_access : {
+      "${proj_value.bu}_${key}" = {
+        bu      = proj_value.bu
+        project = proj_key
+        readaccess = proj_value.value.read-outputs
+        value   = value
+      }
+    }
+  ]])
+ 
 
 
+} 
 
-  #read-outputs = { for key, value in local.bu_projects_access : key => value if length(value.value["read-outputs"]) > 0}
 
-  #readoutputs_map = { for key in local.read-outputs : key => local.read-outputs[key].team_project_access.keys }
-
+output "read_output_keys" {
+  value = local.read_output_keys
+  
 }
 

@@ -2,7 +2,7 @@ bu: retail
 projects:
   data_prod:
     name: data_prod
-    description: cdao prod data platform
+    description: cdao prod platform
     team_project_access:
       data_prod_maintain:
         team:
@@ -12,7 +12,7 @@ projects:
           access: "write"
   data_nonprod:
     name: data_nonprod
-    description: cdao prod data platform
+    description: cdao nonprod platform
     team_project_access:
       data_nonprod_maintain:
         team:

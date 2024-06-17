@@ -109,6 +109,7 @@ module "consumer_project" {
 
   organization_name = var.tfc_organization_name
   project_name      = "${each.value.bu}_${each.value.project}"
+  project_description = each.value.value.description
   business_unit     = each.value.bu
 
   team_project_access        = try(each.value.value.team_project_access, {})

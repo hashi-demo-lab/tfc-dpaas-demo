@@ -1,6 +1,6 @@
 bu: retail
 projects:
-  data_prod:
+  arbitary3:
     name: data_prod
     description: retail prod platform
     environment: prod
@@ -15,7 +15,7 @@ projects:
       cdao_data_prod:
         project: cdao_data_prod
         access: read-outputs 
-  data_nonprod:
+  arbitary4:
     name: data_nonprod
     description: retail nonprod platform
     environment: nonprod

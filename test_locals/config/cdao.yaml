@@ -1,6 +1,6 @@
 bu: cdao
 projects:
-  data_prod:
+  arbitary1:
     name: data_prod
     description: cdao prod platform
     environment: prod
@@ -13,7 +13,7 @@ projects:
           access: "write"
     read-outputs: {}
     
-  data_nonprod:
+  arbitary2:
     name: data_nonprod
     description: cdao nonprod platform
     environment: nonprod

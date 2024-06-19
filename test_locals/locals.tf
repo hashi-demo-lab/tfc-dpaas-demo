@@ -9,7 +9,7 @@ locals {
       for project_key, project_value in bu_value.projects : {
         "${bu_key}_${project_key}" = {
           bu      = bu_key
-          project = project_key
+          project = "${bu_key}_${project_value.name}"
           value   = project_value
         }
       }
@@ -19,8 +19,11 @@ locals {
 #filter based on read-outputs
   read_outputs_map = { for key, value in local.bu_projects_access : key => value if length(value.value["read-outputs"]) > 0 }
 
-  # convert list of bu_project_list to map
+  # convert list of bu_project_list to map 
   bu_projects_access = { for bu_project in local.bu_project_list : keys(bu_project)[0] => values(bu_project)[0] }
+
+
+
 
 # key based on project, team and readaccess to parent project
   read_output_keys = flatten([
@@ -29,9 +32,9 @@ locals {
         for readaccess_key, readaccess_value in proj_value.value.read-outputs : {
           "${proj_key}_${key}_${readaccess_key}" = {
             bu         = proj_value.bu
-            project    = proj_key
+            project    = "${proj_value.bu}_${proj_value.value.name}"
             readaccess = readaccess_value.project
-            team ="${proj_key}_${value.team.access}"
+            team ="${proj_value.bu}_${proj_value.value.name}_${value.team.access}"
             value      = value
           }
         }
@@ -44,7 +47,14 @@ locals {
 
 
 
-output "read_output_keys1" {
+output "read_output_keys" {
   value = local.read_output_keys
 }
 
+output "bu_project_list" {
+  value = local.bu_project_list
+}
+
+output "bu_projects_access" {
+  value = local.bu_projects_access
+}

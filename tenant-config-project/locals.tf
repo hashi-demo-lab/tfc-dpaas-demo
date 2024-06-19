@@ -29,7 +29,7 @@ locals {
         for readaccess_key, readaccess_value in proj_value.value.read-outputs : {
           "${proj_key}_${key}_${readaccess_key}" = {
             bu         = proj_value.bu
-            project    = proj_key
+            project    = proj_value.value.name
             readaccess = readaccess_value.project
             team ="${proj_key}_${value.team.access}"
             value      = value
